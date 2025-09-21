@@ -8,7 +8,7 @@ export class CardSeeder {
     const gameRepo = dataSource.getRepository(Game);
 
     const urlPrefix =
-      "'https://www.geoguessr.com/images/resize:fit:0:256/gravity:ce/plain/seterra/game-area";
+      'https://www.geoguessr.com/images/resize:fit:0:256/gravity:ce/plain/seterra/game-area';
 
     const games = await gameRepo.find({
       where: {

@@ -35,7 +35,7 @@ export class CardService {
       throw new NotFoundException('Card não encontrado');
     }
 
-    return this.cardRepository.findOneBy({ id });
+    return card;
   }
 
   async remove(id: number) {
