@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Card } from 'src/card/card.entity';
 
 @Entity()
 export class Game {
@@ -10,4 +11,7 @@ export class Game {
   @Column()
   @ApiProperty()
   name: string;
+
+  @OneToMany(() => Card, (card) => card.game)
+  cards: Card[];
 }

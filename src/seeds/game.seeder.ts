@@ -13,6 +13,7 @@ export class GameSeeder {
       { name: 'Asia' },
       { name: 'Africa' },
       { name: 'Oceania' },
+      { name: 'Outros' },
     ];
 
     for (const game of games) {
