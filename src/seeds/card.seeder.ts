@@ -44,7 +44,7 @@ export class CardSeeder {
       },
       {
         answer: 'Argentina',
-        image_path: getImageUrl('argentina'),
+        image_path: getImageUrl('argentin'),
         game: southAmerica,
       },
       { answer: 'Chile', image_path: getImageUrl('chile'), game: southAmerica },
@@ -71,7 +71,7 @@ export class CardSeeder {
       },
       {
         answer: 'Venezuela',
-        image_path: getImageUrl('venezuela'),
+        image_path: getImageUrl('venezuel'),
         game: southAmerica,
       },
       {
@@ -91,7 +91,7 @@ export class CardSeeder {
       },
       {
         answer: 'Guiana Francesa',
-        image_path: getImageUrl('french-guiana'),
+        image_path: getImageUrl('frenchguiana'),
         game: southAmerica,
       },
       {
@@ -101,7 +101,7 @@ export class CardSeeder {
       },
       {
         answer: 'Estados Unidos',
-        image_path: getImageUrl('united-states'),
+        image_path: getImageUrl('usa'),
         game: northAmerica,
       },
       {
@@ -111,7 +111,7 @@ export class CardSeeder {
       },
       {
         answer: 'Costa Rica',
-        image_path: getImageUrl('costa-rica'),
+        image_path: getImageUrl('costaric'),
         game: centralAmerica,
       },
       {
@@ -121,7 +121,7 @@ export class CardSeeder {
       },
       {
         answer: 'Nicarágua',
-        image_path: getImageUrl('nicaragua'),
+        image_path: getImageUrl('nicagua'),
         game: centralAmerica,
       },
       {
@@ -131,7 +131,7 @@ export class CardSeeder {
       },
       {
         answer: 'El Salvador',
-        image_path: getImageUrl('el-salvador'),
+        image_path: getImageUrl('elsalv'),
         game: centralAmerica,
       },
       {
@@ -164,16 +164,16 @@ export class CardSeeder {
       { answer: 'Bélgica', image_path: getImageUrl('belgium'), game: europe },
       {
         answer: 'Holanda',
-        image_path: getImageUrl('netherlands'),
+        image_path: getImageUrl('netherland'),
         game: europe,
       },
-      { answer: 'Suíça', image_path: getImageUrl('switzerland'), game: europe },
+      { answer: 'Suíça', image_path: getImageUrl('switzlnd'), game: europe },
       { answer: 'Áustria', image_path: getImageUrl('austria'), game: europe },
       { answer: 'Dinamarca', image_path: getImageUrl('denmark'), game: europe },
       { answer: 'Polônia', image_path: getImageUrl('poland'), game: europe },
       {
         answer: 'República Tcheca',
-        image_path: getImageUrl('czech-republic'),
+        image_path: getImageUrl('czech'),
         game: europe,
       },
       {
@@ -189,7 +189,7 @@ export class CardSeeder {
       { answer: 'Croácia', image_path: getImageUrl('croatia'), game: europe },
       {
         answer: 'Bósnia e Herzegovina',
-        image_path: getImageUrl('bosnia-and-herzegovina'),
+        image_path: getImageUrl('bosnia'),
         game: europe,
       },
       { answer: 'Sérvia', image_path: getImageUrl('serbia'), game: europe },
@@ -201,7 +201,7 @@ export class CardSeeder {
       { answer: 'Albânia', image_path: getImageUrl('albania'), game: europe },
       {
         answer: 'Macedônia do Norte',
-        image_path: getImageUrl('north-macedonia'),
+        image_path: getImageUrl('macedon'),
         game: europe,
       },
       { answer: 'Grécia', image_path: getImageUrl('greece'), game: europe },
@@ -214,7 +214,7 @@ export class CardSeeder {
       },
       {
         answer: 'Lituânia',
-        image_path: getImageUrl('lithuania'),
+        image_path: getImageUrl('lithuan'),
         game: europe,
       },
       { answer: 'Letônia', image_path: getImageUrl('latvia'), game: europe },
@@ -222,7 +222,7 @@ export class CardSeeder {
       { answer: 'Islândia', image_path: getImageUrl('iceland'), game: europe },
       {
         answer: 'Luxemburgo',
-        image_path: getImageUrl('luxembourg'),
+        image_path: getImageUrl('luxemburg'),
         game: europe,
       },
       {
@@ -233,18 +233,18 @@ export class CardSeeder {
       { answer: 'Mônaco', image_path: getImageUrl('monaco'), game: europe },
       {
         answer: 'San Marino',
-        image_path: getImageUrl('san-marino'),
+        image_path: getImageUrl('sanmarino'),
         game: europe,
       },
       {
         answer: 'Cidade do Vaticano',
-        image_path: getImageUrl('vatican-city'),
+        image_path: getImageUrl('vatican'),
         game: europe,
       },
       { answer: 'Andorra', image_path: getImageUrl('andorra'), game: europe },
       {
         answer: 'África do Sul',
-        image_path: getImageUrl('south-africa'),
+        image_path: getImageUrl('safrica'),
         game: africa,
       },
       { answer: 'Egito', image_path: getImageUrl('egypt'), game: africa },
@@ -259,23 +259,23 @@ export class CardSeeder {
       { answer: 'Senegal', image_path: getImageUrl('senegal'), game: africa },
       {
         answer: 'Costa do Marfim',
-        image_path: getImageUrl('ivory-coast'),
+        image_path: getImageUrl('ivory'),
         game: africa,
       },
       { answer: 'Camarões', image_path: getImageUrl('cameroon'), game: africa },
       {
         answer: 'República Democrática do Congo',
-        image_path: getImageUrl('democratic-republic-of-the-congo'),
+        image_path: getImageUrl('congo'),
         game: africa,
       },
       {
         answer: 'República do Congo',
-        image_path: getImageUrl('republic-of-the-congo'),
+        image_path: getImageUrl('thecongo'),
         game: africa,
       },
       {
         answer: 'Moçambique',
-        image_path: getImageUrl('mozambique'),
+        image_path: getImageUrl('mozamb'),
         game: africa,
       },
       { answer: 'Zâmbia', image_path: getImageUrl('zambia'), game: africa },
@@ -288,7 +288,7 @@ export class CardSeeder {
       { answer: 'Sudão', image_path: getImageUrl('sudan'), game: africa },
       {
         answer: 'Sudão do Sul',
-        image_path: getImageUrl('south-sudan'),
+        image_path: getImageUrl('southsudan'),
         game: africa,
       },
       { answer: 'Somália', image_path: getImageUrl('somalia'), game: africa },
@@ -307,7 +307,7 @@ export class CardSeeder {
       },
       {
         answer: 'Bangladesh',
-        image_path: getImageUrl('bangladesh'),
+        image_path: getImageUrl('bangla'),
         game: asia,
       },
       { answer: 'Irã', image_path: getImageUrl('iran'), game: asia },
@@ -315,24 +315,24 @@ export class CardSeeder {
       { answer: 'Israel', image_path: getImageUrl('israel'), game: asia },
       {
         answer: 'Arábia Saudita',
-        image_path: getImageUrl('saudi-arabia'),
+        image_path: getImageUrl('saudi'),
         game: asia,
       },
       {
         answer: 'Coreia do Sul',
-        image_path: getImageUrl('south-korea'),
+        image_path: getImageUrl('skorea'),
         game: asia,
       },
       {
         answer: 'Coreia do Norte',
-        image_path: getImageUrl('north-korea'),
+        image_path: getImageUrl('nkorea'),
         game: asia,
       },
-      { answer: 'Indonésia', image_path: getImageUrl('indonesia'), game: asia },
+      { answer: 'Indonésia', image_path: getImageUrl('indones'), game: asia },
       { answer: 'Malásia', image_path: getImageUrl('malaysia'), game: asia },
       {
         answer: 'Filipinas',
-        image_path: getImageUrl('philippines'),
+        image_path: getImageUrl('philipp'),
         game: asia,
       },
       { answer: 'Tailândia', image_path: getImageUrl('thailand'), game: asia },
@@ -349,12 +349,12 @@ export class CardSeeder {
       },
       {
         answer: 'Austrália',
-        image_path: getImageUrl('australia'),
+        image_path: getImageUrl('austral'),
         game: oceania,
       },
       {
         answer: 'Nova Zelândia',
-        image_path: getImageUrl('new-zealand'),
+        image_path: getImageUrl('newzealand'),
         game: oceania,
       },
       { answer: 'Fiji', image_path: getImageUrl('fiji'), game: oceania },
@@ -362,7 +362,7 @@ export class CardSeeder {
       { answer: 'Tonga', image_path: getImageUrl('tonga'), game: oceania },
       {
         answer: 'Ilhas Marshall',
-        image_path: getImageUrl('marshall-islands'),
+        image_path: getImageUrl('marshallislands'),
         game: oceania,
       },
       {
@@ -374,36 +374,36 @@ export class CardSeeder {
       { answer: 'Palau', image_path: getImageUrl('palau'), game: oceania },
       { answer: 'Abkhazia', image_path: getImageUrl('abkhazia'), game: other },
       {
-        answer: 'Afeganistão (-2021)',
-        image_path: getImageUrl('afghanistan-2021'),
+        answer: 'Afeganistão (2021)',
+        image_path: getImageUrl('area_afghanistan2021'),
         game: other,
       },
       {
         answer: 'Afeganistão (Taliban)',
-        image_path: getImageUrl('afghanistan-taliban'),
+        image_path: getImageUrl('area_afghanistantaliban'),
         game: other,
       },
       {
         answer: 'American Samoa',
-        image_path: getImageUrl('american-samoa'),
+        image_path: getImageUrl('americansamoa'),
         game: other,
       },
       { answer: 'Anguilla', image_path: getImageUrl('anguilla'), game: other },
       {
         answer: 'Antigua e Barbuda',
-        image_path: getImageUrl('antigua-and-barbuda'),
+        image_path: getImageUrl('antiguaandbarbuda'),
         game: other,
       },
       { answer: 'Armenia', image_path: getImageUrl('armenia'), game: other },
       {
-        answer: 'Artsakh (Nagorno-Karabakh)',
+        answer: 'Artsakh (NagornoKarabakh)',
         image_path: getImageUrl('artsakh'),
         game: other,
       },
       { answer: 'Aruba', image_path: getImageUrl('aruba'), game: other },
       {
         answer: 'Ascension Island',
-        image_path: getImageUrl('ascension-island'),
+        image_path: getImageUrl('ascensionisland'),
         game: other,
       },
       {
@@ -413,7 +413,7 @@ export class CardSeeder {
       },
       {
         answer: 'Bahamas',
-        image_path: getImageUrl('the-bahamas'),
+        image_path: getImageUrl('thebahamas'),
         game: other,
       },
       { answer: 'Bahrain', image_path: getImageUrl('bahrain'), game: other },
@@ -425,7 +425,7 @@ export class CardSeeder {
       },
       {
         answer: 'Basque Country',
-        image_path: getImageUrl('basque-country'),
+        image_path: getImageUrl('basquecountry'),
         game: other,
       },
       { answer: 'Bermuda', image_path: getImageUrl('bermuda'), game: other },
@@ -438,24 +438,24 @@ export class CardSeeder {
       },
       {
         answer: 'British Antarctic Territory',
-        image_path: getImageUrl('british-antarctic-territory'),
+        image_path: getImageUrl('britishantarcticterritory'),
         game: other,
       },
       {
         answer: 'British Indian Ocean Territory',
-        image_path: getImageUrl('british-indian-ocean-territory'),
+        image_path: getImageUrl('britishindianoceanterritory'),
         game: other,
       },
       {
         answer: 'British Virgin Islands',
-        image_path: getImageUrl('british-virgin-islands'),
+        image_path: getImageUrl('britishvirginislands'),
         game: other,
       },
       { answer: 'Brunei', image_path: getImageUrl('brunei'), game: other },
       { answer: 'Cambodia', image_path: getImageUrl('cambodia'), game: other },
       {
         answer: 'Cape Verde',
-        image_path: getImageUrl('cape-verde'),
+        image_path: getImageUrl('capeverde'),
         game: other,
       },
       {
@@ -465,24 +465,24 @@ export class CardSeeder {
       },
       {
         answer: 'Cayman Islands',
-        image_path: getImageUrl('cayman-islands'),
+        image_path: getImageUrl('caymanislands'),
         game: other,
       },
       { answer: 'Chechnya', image_path: getImageUrl('chechnya'), game: other },
       {
         answer: 'Christmas Island',
-        image_path: getImageUrl('christmas-island'),
+        image_path: getImageUrl('christmasisland'),
         game: other,
       },
       {
         answer: 'Cocos Islands',
-        image_path: getImageUrl('cocos-islands'),
+        image_path: getImageUrl('cocosislands'),
         game: other,
       },
       { answer: 'Comoros', image_path: getImageUrl('comoros'), game: other },
       {
         answer: 'Cook Islands',
-        image_path: getImageUrl('cook-islands'),
+        image_path: getImageUrl('cookislands'),
         game: other,
       },
       { answer: 'Crimea', image_path: getImageUrl('crimea'), game: other },
@@ -494,44 +494,44 @@ export class CardSeeder {
       { answer: 'Dominica', image_path: getImageUrl('dominica'), game: other },
       {
         answer: 'Dominican Republic',
-        image_path: getImageUrl('dominican-republic'),
+        image_path: getImageUrl('dominicanrepublic'),
         game: other,
       },
       {
         answer: 'East Timor',
-        image_path: getImageUrl('east-timor'),
+        image_path: getImageUrl('easttimor'),
         game: other,
       },
       {
         answer: 'Equatorial Guinea',
-        image_path: getImageUrl('equatorial-guinea'),
+        image_path: getImageUrl('equatorialguinea'),
         game: other,
       },
       { answer: 'Eritrea', image_path: getImageUrl('eritrea'), game: other },
       { answer: 'Eswatini', image_path: getImageUrl('eswatini'), game: other },
       {
         answer: 'Falkland Islands',
-        image_path: getImageUrl('falkland-islands'),
+        image_path: getImageUrl('falklandislands'),
         game: other,
       },
       {
         answer: 'Faroe Islands',
-        image_path: getImageUrl('faroe-islands'),
+        image_path: getImageUrl('faroeislands'),
         game: other,
       },
       {
         answer: 'French Guiana',
-        image_path: getImageUrl('french-guiana'),
+        image_path: getImageUrl('frenchguiana'),
         game: other,
       },
       {
         answer: 'French Polynesia',
-        image_path: getImageUrl('french-polynesia'),
+        image_path: getImageUrl('frenchpolynesia'),
         game: other,
       },
       {
         answer: 'French Southern and Antarctic Lands',
-        image_path: getImageUrl('french-southern-and-antarctic-lands'),
+        image_path: getImageUrl('frenchsouthernandantarcticlands'),
         game: other,
       },
       {
@@ -554,19 +554,19 @@ export class CardSeeder {
       { answer: 'Guernsey', image_path: getImageUrl('guernsey'), game: other },
       { answer: 'Guinea', image_path: getImageUrl('guinea'), game: other },
       {
-        answer: 'Guinea-Bissau',
-        image_path: getImageUrl('guinea-bissau'),
+        answer: 'GuineaBissau',
+        image_path: getImageUrl('guineabissau'),
         game: other,
       },
       { answer: 'Haiti', image_path: getImageUrl('haiti'), game: other },
       {
         answer: 'Hong Kong',
-        image_path: getImageUrl('hong-kong'),
+        image_path: getImageUrl('hongkong'),
         game: other,
       },
       {
         answer: 'Isle of Man',
-        image_path: getImageUrl('isle-of-man'),
+        image_path: getImageUrl('isleofman'),
         game: other,
       },
       { answer: 'Jamaica', image_path: getImageUrl('jamaica'), game: other },
@@ -585,7 +585,7 @@ export class CardSeeder {
       { answer: 'Liberia', image_path: getImageUrl('liberia'), game: other },
       {
         answer: 'Lord Howe Island',
-        image_path: getImageUrl('lord-howe-island'),
+        image_path: getImageUrl('lordhoweisland'),
         game: other,
       },
       { answer: 'Macau', image_path: getImageUrl('macau'), game: other },
@@ -619,22 +619,22 @@ export class CardSeeder {
       { answer: 'Niue', image_path: getImageUrl('niue'), game: other },
       {
         answer: 'Norfolk Island',
-        image_path: getImageUrl('norfolk-island'),
+        image_path: getImageUrl('norfolkisland'),
         game: other,
       },
       {
         answer: 'Northern Cyprus',
-        image_path: getImageUrl('northern-cyprus'),
+        image_path: getImageUrl('northerncyprus'),
         game: other,
       },
       {
         answer: 'Northern Ireland',
-        image_path: getImageUrl('northern-ireland'),
+        image_path: getImageUrl('northernireland'),
         game: other,
       },
       {
         answer: 'Northern Mariana Islands',
-        image_path: getImageUrl('northern-mariana-islands'),
+        image_path: getImageUrl('northernmarianaislands'),
         game: other,
       },
       { answer: 'Oman', image_path: getImageUrl('oman'), game: other },
@@ -645,17 +645,17 @@ export class CardSeeder {
       },
       {
         answer: 'Papua Nova Guiné',
-        image_path: getImageUrl('papua-new-guinea'),
+        image_path: getImageUrl('papuanewguinea'),
         game: other,
       },
       {
         answer: 'Pitcairn Islands',
-        image_path: getImageUrl('pitcairn-islands'),
+        image_path: getImageUrl('pitcairnislands'),
         game: other,
       },
       {
         answer: 'Puerto Rico',
-        image_path: getImageUrl('puerto-rico'),
+        image_path: getImageUrl('puertorico'),
         game: other,
       },
       { answer: 'Qatar', image_path: getImageUrl('qatar'), game: other },
@@ -665,32 +665,32 @@ export class CardSeeder {
       { answer: 'Saba', image_path: getImageUrl('saba'), game: other },
       {
         answer: 'Saint Barthélemy',
-        image_path: getImageUrl('saint-barthelemy'),
+        image_path: getImageUrl('saintbarthelemy'),
         game: other,
       },
       {
         answer: 'Saint Helena',
-        image_path: getImageUrl('saint-helena'),
+        image_path: getImageUrl('sainthelena'),
         game: other,
       },
       {
         answer: 'Saint Kitts and Nevis',
-        image_path: getImageUrl('saint-kitts-and-nevis'),
+        image_path: getImageUrl('saintkittsandnevis'),
         game: other,
       },
       {
         answer: 'Saint Lucia',
-        image_path: getImageUrl('saint-lucia'),
+        image_path: getImageUrl('saintlucia'),
         game: other,
       },
       {
         answer: 'Saint Pierre and Miquelon',
-        image_path: getImageUrl('saint-pierre-and-miquelon'),
+        image_path: getImageUrl('saintpierreandmiquelon'),
         game: other,
       },
       {
         answer: 'Saint Vincent and the Grenadines',
-        image_path: getImageUrl('saint-vincent-and-the-grenadines'),
+        image_path: getImageUrl('saintvincentandthegrenadines'),
         game: other,
       },
       {
@@ -700,7 +700,7 @@ export class CardSeeder {
       },
       {
         answer: 'Sierra Leone',
-        image_path: getImageUrl('sierra-leone'),
+        image_path: getImageUrl('sierraleone'),
         game: other,
       },
       {
@@ -710,17 +710,17 @@ export class CardSeeder {
       },
       {
         answer: 'Sint Eustatius',
-        image_path: getImageUrl('sint-eustatius'),
+        image_path: getImageUrl('sinteustatius'),
         game: other,
       },
       {
         answer: 'Sint Maarten',
-        image_path: getImageUrl('sint-maarten'),
+        image_path: getImageUrl('sintmaarten'),
         game: other,
       },
       {
         answer: 'Solomon Islands',
-        image_path: getImageUrl('solomon-islands'),
+        image_path: getImageUrl('solomonislands'),
         game: other,
       },
       {
@@ -730,12 +730,12 @@ export class CardSeeder {
       },
       {
         answer: 'South Georgia and the South Sandwich Islands',
-        image_path: getImageUrl('south-georgia-and-south-sandwich-islands'),
+        image_path: getImageUrl('southgeorgiaandsouthsandwichislands'),
         game: other,
       },
       {
         answer: 'South Ossetia',
-        image_path: getImageUrl('south-ossetia'),
+        image_path: getImageUrl('southossetia'),
         game: other,
       },
       {
@@ -745,49 +745,49 @@ export class CardSeeder {
       },
       {
         answer: 'Trinidad e Tobago',
-        image_path: getImageUrl('trinidad-and-tobago'),
+        image_path: getImageUrl('trinidadandtobago'),
         game: other,
       },
       {
         answer: 'Tristan da Cunha',
-        image_path: getImageUrl('tristan-da-cunha'),
+        image_path: getImageUrl('tristandacunha'),
         game: other,
       },
       {
         answer: 'Turks and Caicos Islands',
-        image_path: getImageUrl('turks-and-caicos-islands'),
+        image_path: getImageUrl('turksandcaicosislands'),
         game: other,
       },
       { answer: 'Tuvalu', image_path: getImageUrl('tuvalu'), game: other },
       {
         answer: 'US Virgin Islands',
-        image_path: getImageUrl('us-virgin-islands'),
+        image_path: getImageUrl('usvirginislands'),
         game: other,
       },
       {
         answer: 'Wallis and Futuna',
-        image_path: getImageUrl('wallis-and-futuna'),
+        image_path: getImageUrl('wallisandfutuna'),
         game: other,
       },
       { answer: 'Wallonia', image_path: getImageUrl('wallonia'), game: other },
       {
         answer: 'West Papua',
-        image_path: getImageUrl('west-papua'),
+        image_path: getImageUrl('westpapua'),
         game: other,
       },
       {
         answer: 'Western Sahara',
-        image_path: getImageUrl('western-sahara'),
+        image_path: getImageUrl('westernsahara'),
         game: other,
       },
       {
         answer: 'Åland Islands',
-        image_path: getImageUrl('aland-islands'),
+        image_path: getImageUrl('alandislands'),
         game: other,
       },
       {
         answer: 'Federated States of Micronesia',
-        image_path: getImageUrl('federated-states-of-micronesia'),
+        image_path: getImageUrl('federatedstatesofmicronesia'),
         game: other,
       },
       { answer: 'Tibete', image_path: getImageUrl('tibet'), game: other },
