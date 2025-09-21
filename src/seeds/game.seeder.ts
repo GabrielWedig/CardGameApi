@@ -6,14 +6,12 @@ export class GameSeeder {
     const repo = dataSource.getRepository(Game);
 
     const games = [
-      { name: 'América do Sul' },
-      { name: 'América Central' },
-      { name: 'América do Norte' },
-      { name: 'Europa' },
-      { name: 'Asia' },
+      { name: 'América' },
+      // { name: 'Europa' },
+      // { name: 'Asia' },
       { name: 'Africa' },
-      { name: 'Oceania' },
-      { name: 'Outros' },
+      // { name: 'Oceania' },
+      // { name: 'Outros' },
     ];
 
     for (const game of games) {
