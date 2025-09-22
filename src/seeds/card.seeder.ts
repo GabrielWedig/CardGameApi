@@ -14,15 +14,24 @@ export class CardSeeder {
 
     const games = await gameRepo.find({
       where: {
-        name: In(['América', 'Europa', 'Asia', 'Africa', 'Oceania', 'Outros']),
+        name: In([
+          'América',
+          'Europa',
+          'Asia',
+          'Africa',
+          'Oceania',
+          'ONU',
+          'Outros',
+        ]),
       },
     });
 
     const america = games.find((g) => g.name === 'América');
-    // const europe = games.find((g) => g.name === 'Europa');
-    // const asia = games.find((g) => g.name === 'Asia');
+    const europe = games.find((g) => g.name === 'Europa');
+    const asia = games.find((g) => g.name === 'Asia');
     const africa = games.find((g) => g.name === 'Africa');
-    // const oceania = games.find((g) => g.name === 'Oceania');
+    const oceania = games.find((g) => g.name === 'Oceania');
+    const onu = games.find((g) => g.name === 'ONU');
     // const other = games.find((g) => g.name === 'Outros');
 
     const africaCards = [
@@ -312,7 +321,299 @@ export class CardSeeder {
       },
     ];
 
-    const cards = [...africaCards, ...americaCards];
+    const asiaCards = [
+      {
+        answer: 'Afeganistão',
+        image_path: getImageUrl('afghani'),
+        game: asia,
+      },
+      {
+        answer: 'Arábia Saudita',
+        image_path: getImageUrl('saudi'),
+        game: asia,
+      },
+      { answer: 'Armênia', image_path: getImageUrl('armenia'), game: asia },
+      {
+        answer: 'Azerbaijão',
+        image_path: getImageUrl('azerbaijan'),
+        game: asia,
+      },
+      { answer: 'Bahrain', image_path: getImageUrl('bahrain'), game: asia },
+      {
+        answer: 'Bangladesh',
+        image_path: getImageUrl('bangla'),
+        game: asia,
+      },
+      { answer: 'Brunei', image_path: getImageUrl('brunei'), game: asia },
+      { answer: 'Butão', image_path: getImageUrl('bhutan'), game: asia },
+      { answer: 'Camboja', image_path: getImageUrl('cambodia'), game: asia },
+      {
+        answer: 'Cazaquistão',
+        image_path: getImageUrl('kazakhstan'),
+        game: asia,
+      },
+      { answer: 'Qatar', image_path: getImageUrl('qatar'), game: asia },
+      { answer: 'China', image_path: getImageUrl('china'), game: asia },
+      { answer: 'Chipre', image_path: getImageUrl('cyprus'), game: asia },
+      {
+        answer: 'Singapura',
+        image_path: getImageUrl('singapore'),
+        game: asia,
+      },
+      {
+        answer: 'Coreia do Sul',
+        image_path: getImageUrl('skorea'),
+        game: asia,
+      },
+      {
+        answer: 'Coreia do Norte',
+        image_path: getImageUrl('nkorea'),
+        game: asia,
+      },
+      {
+        answer: 'Emirados Árabes Unidos',
+        image_path: getImageUrl('uae'),
+        game: asia,
+      },
+      {
+        answer: 'Filipinas',
+        image_path: getImageUrl('philipp'),
+        game: asia,
+      },
+      {
+        answer: 'Geórgia',
+        image_path: getImageUrl('georgia'),
+        game: asia,
+      },
+      {
+        answer: 'Iêmen',
+        image_path: getImageUrl('yemen'),
+        game: asia,
+      },
+      { answer: 'Índia', image_path: getImageUrl('india'), game: asia },
+      { answer: 'Indonésia', image_path: getImageUrl('indones'), game: asia },
+      { answer: 'Irã', image_path: getImageUrl('iran'), game: asia },
+      { answer: 'Iraque', image_path: getImageUrl('iraq'), game: asia },
+      { answer: 'Israel', image_path: getImageUrl('israel'), game: asia },
+      { answer: 'Japão', image_path: getImageUrl('japan'), game: asia },
+      { answer: 'Jordânia', image_path: getImageUrl('jordan'), game: asia },
+      { answer: 'Kuwait', image_path: getImageUrl('kuwait'), game: asia },
+      { answer: 'Laos', image_path: getImageUrl('laos'), game: asia },
+      { answer: 'Líbano', image_path: getImageUrl('lebanon'), game: asia },
+      { answer: 'Malásia', image_path: getImageUrl('malaysia'), game: asia },
+      { answer: 'Maldivas', image_path: getImageUrl('maldives'), game: asia },
+      { answer: 'Mianmar', image_path: getImageUrl('burma'), game: asia },
+      { answer: 'Mongólia', image_path: getImageUrl('mongolia'), game: asia },
+      { answer: 'Nepal', image_path: getImageUrl('nepal'), game: asia },
+      { answer: 'Omã', image_path: getImageUrl('oman'), game: asia },
+      { answer: 'Paquistão', image_path: getImageUrl('pakistan'), game: asia },
+      {
+        answer: 'Quirguistão',
+        image_path: getImageUrl('kyrgyzstan'),
+        game: asia,
+      },
+      { answer: 'Russia', image_path: getImageUrl('russia'), game: asia },
+      { answer: 'Síria', image_path: getImageUrl('syria'), game: asia },
+      { answer: 'Sri Lanka', image_path: getImageUrl('srilanka'), game: asia },
+      {
+        answer: 'Tajiquistão',
+        image_path: getImageUrl('tajikistan'),
+        game: asia,
+      },
+      { answer: 'Tailândia', image_path: getImageUrl('thailand'), game: asia },
+      {
+        answer: 'Timor-Leste',
+        image_path: getImageUrl('easttimor'),
+        game: asia,
+      },
+      {
+        answer: 'Turcomenistão',
+        image_path: getImageUrl('turkmenistan'),
+        game: asia,
+      },
+      { answer: 'Turquia', image_path: getImageUrl('turkey'), game: asia },
+      {
+        answer: 'Uzbequistão',
+        image_path: getImageUrl('uzbekistan'),
+        game: asia,
+      },
+      {
+        answer: 'Vietnã',
+        image_path: getImageUrl('vietnam'),
+        game: asia,
+      },
+    ];
+
+    const europaCards = [
+      { answer: 'Albânia', image_path: getImageUrl('albania'), game: europe },
+      { answer: 'Alemanha', image_path: getImageUrl('germany'), game: europe },
+      { answer: 'Andorra', image_path: getImageUrl('andorra'), game: europe },
+      { answer: 'Armênia', image_path: getImageUrl('armenia'), game: europe },
+      { answer: 'Áustria', image_path: getImageUrl('austria'), game: europe },
+      {
+        answer: 'Azerbaijão',
+        image_path: getImageUrl('azerbaijan'),
+        game: europe,
+      },
+      {
+        answer: 'Bielorrússia',
+        image_path: getImageUrl('belarus'),
+        game: europe,
+      },
+      { answer: 'Bélgica', image_path: getImageUrl('belgium'), game: europe },
+      {
+        answer: 'Bósnia e Herzegovina',
+        image_path: getImageUrl('bosnia'),
+        game: europe,
+      },
+      {
+        answer: 'Bulgária',
+        image_path: getImageUrl('bulgaria'),
+        game: europe,
+      },
+      { answer: 'Chipre', image_path: getImageUrl('cyprus'), game: europe },
+      { answer: 'Croácia', image_path: getImageUrl('croatia'), game: europe },
+      { answer: 'Dinamarca', image_path: getImageUrl('denmark'), game: europe },
+      {
+        answer: 'Eslováquia',
+        image_path: getImageUrl('slovakia'),
+        game: europe,
+      },
+      {
+        answer: 'Eslovênia',
+        image_path: getImageUrl('slovenia'),
+        game: europe,
+      },
+      { answer: 'Espanha', image_path: getImageUrl('spain'), game: europe },
+      { answer: 'Estônia', image_path: getImageUrl('estonia'), game: europe },
+      { answer: 'Finlândia', image_path: getImageUrl('finland'), game: europe },
+      { answer: 'França', image_path: getImageUrl('france'), game: europe },
+      {
+        answer: 'Geórgia',
+        image_path: getImageUrl('georgia'),
+        game: europe,
+      },
+      {
+        answer: 'Grécia',
+        image_path: getImageUrl('greece'),
+        game: europe,
+      },
+      {
+        answer: 'Holanda',
+        image_path: getImageUrl('netherland'),
+        game: europe,
+      },
+      {
+        answer: 'Hungria',
+        image_path: getImageUrl('hungary'),
+        game: europe,
+      },
+      { answer: 'Irlanda', image_path: getImageUrl('ireland'), game: europe },
+      { answer: 'Islândia', image_path: getImageUrl('iceland'), game: europe },
+      { answer: 'Itália', image_path: getImageUrl('italy'), game: europe },
+      { answer: 'Letônia', image_path: getImageUrl('latvia'), game: europe },
+      {
+        answer: 'Liechtenstein',
+        image_path: getImageUrl('liechtenstein'),
+        game: europe,
+      },
+      {
+        answer: 'Lituânia',
+        image_path: getImageUrl('lithuan'),
+        game: europe,
+      },
+      {
+        answer: 'Luxemburgo',
+        image_path: getImageUrl('luxemburg'),
+        game: europe,
+      },
+      {
+        answer: 'Macedônia do Norte',
+        image_path: getImageUrl('macedon'),
+        game: europe,
+      },
+      { answer: 'Malta', image_path: getImageUrl('malta'), game: europe },
+      { answer: 'Moldávia', image_path: getImageUrl('moldova'), game: europe },
+      { answer: 'Mônaco', image_path: getImageUrl('monaco'), game: europe },
+      {
+        answer: 'Montenegro',
+        image_path: getImageUrl('montenegro'),
+        game: europe,
+      },
+      {
+        answer: 'Noruega',
+        image_path: getImageUrl('norway'),
+        game: europe,
+      },
+      { answer: 'Polônia', image_path: getImageUrl('poland'), game: europe },
+      { answer: 'Portugal', image_path: getImageUrl('portugal'), game: europe },
+      {
+        answer: 'Reino Unido',
+        image_path: getImageUrl('uk'),
+        game: europe,
+      },
+      {
+        answer: 'República Tcheca',
+        image_path: getImageUrl('czech'),
+        game: europe,
+      },
+      { answer: 'Romênia', image_path: getImageUrl('romania'), game: europe },
+      { answer: 'Russia', image_path: getImageUrl('russia'), game: europe },
+      {
+        answer: 'San Marino',
+        image_path: getImageUrl('sanmarino'),
+        game: europe,
+      },
+      { answer: 'Sérvia', image_path: getImageUrl('serbia'), game: europe },
+      { answer: 'Suécia', image_path: getImageUrl('sweden'), game: europe },
+      { answer: 'Suíça', image_path: getImageUrl('switzlnd'), game: europe },
+      { answer: 'Ucrânia', image_path: getImageUrl('ukraine'), game: europe },
+    ];
+
+    const oceaniaCards = [
+      {
+        answer: 'Austrália',
+        image_path: getImageUrl('austral'),
+        game: oceania,
+      },
+      { answer: 'Fiji', image_path: getImageUrl('fiji'), game: oceania },
+      {
+        answer: 'Ilhas Marshall',
+        image_path: getImageUrl('marshallislands'),
+        game: oceania,
+      },
+      {
+        answer: 'Ilhas Salomão',
+        image_path: getImageUrl('solomon'),
+        game: oceania,
+      },
+      {
+        answer: 'Kiribati',
+        image_path: getImageUrl('kiribati'),
+        game: oceania,
+      },
+      {
+        answer: 'Estados Federados da Micronésia',
+        image_path: getImageUrl('micronesia'),
+        game: oceania,
+      },
+      { answer: 'Nauru', image_path: getImageUrl('nauru'), game: oceania },
+      {
+        answer: 'Nova Zelândia',
+        image_path: getImageUrl('newzealand'),
+        game: oceania,
+      },
+      { answer: 'Palau', image_path: getImageUrl('palau'), game: oceania },
+      {
+        answer: 'Papua Nova Guiné',
+        image_path: getImageUrl('papuanewguinea'),
+        game: oceania,
+      },
+      { answer: 'Samoa', image_path: getImageUrl('samoa'), game: oceania },
+      { answer: 'Tonga', image_path: getImageUrl('tonga'), game: oceania },
+      { answer: 'Tuvalu', image_path: getImageUrl('tuvalu'), game: oceania },
+      { answer: 'Vanuatu', image_path: getImageUrl('vanuatu'), game: oceania },
+    ];
 
     // const cards = [
     //   {
@@ -321,11 +622,6 @@ export class CardSeeder {
     //     game: other,
     //   },
 
-    //   { answer: 'Alemanha', image_path: getImageUrl('germany'), game: europe },
-    //   { answer: 'França', image_path: getImageUrl('france'), game: europe },
-    //   { answer: 'Itália', image_path: getImageUrl('italy'), game: europe },
-    //   { answer: 'Espanha', image_path: getImageUrl('spain'), game: europe },
-    //   { answer: 'Portugal', image_path: getImageUrl('portugal'), game: europe },
     //   {
     //     answer: 'Inglaterra',
     //     image_path: getImageUrl('england'),
@@ -337,167 +633,13 @@ export class CardSeeder {
     //     image_path: getImageUrl('wales'),
     //     game: europe,
     //   },
-    //   { answer: 'Irlanda', image_path: getImageUrl('ireland'), game: europe },
-    //   { answer: 'Bélgica', image_path: getImageUrl('belgium'), game: europe },
-    //   {
-    //     answer: 'Holanda',
-    //     image_path: getImageUrl('netherland'),
-    //     game: europe,
-    //   },
-    //   { answer: 'Suíça', image_path: getImageUrl('switzlnd'), game: europe },
-    //   { answer: 'Áustria', image_path: getImageUrl('austria'), game: europe },
-    //   { answer: 'Dinamarca', image_path: getImageUrl('denmark'), game: europe },
-    //   { answer: 'Polônia', image_path: getImageUrl('poland'), game: europe },
-    //   {
-    //     answer: 'República Tcheca',
-    //     image_path: getImageUrl('czech'),
-    //     game: europe,
-    //   },
-    //   {
-    //     answer: 'Eslováquia',
-    //     image_path: getImageUrl('slovakia'),
-    //     game: europe,
-    //   },
-    //   {
-    //     answer: 'Eslovênia',
-    //     image_path: getImageUrl('slovenia'),
-    //     game: europe,
-    //   },
-    //   { answer: 'Croácia', image_path: getImageUrl('croatia'), game: europe },
-    //   {
-    //     answer: 'Bósnia e Herzegovina',
-    //     image_path: getImageUrl('bosnia'),
-    //     game: europe,
-    //   },
-    //   { answer: 'Sérvia', image_path: getImageUrl('serbia'), game: europe },
-    //   {
-    //     answer: 'Montenegro',
-    //     image_path: getImageUrl('montenegro'),
-    //     game: europe,
-    //   },
-    //   { answer: 'Albânia', image_path: getImageUrl('albania'), game: europe },
-    //   {
-    //     answer: 'Macedônia do Norte',
-    //     image_path: getImageUrl('macedon'),
-    //     game: europe,
-    //   },
-    //   { answer: 'Grécia', image_path: getImageUrl('greece'), game: europe },
-    //   { answer: 'Romênia', image_path: getImageUrl('romania'), game: europe },
-    //   { answer: 'Ucrânia', image_path: getImageUrl('ukraine'), game: europe },
-    //   {
-    //     answer: 'Bielorrússia',
-    //     image_path: getImageUrl('belarus'),
-    //     game: europe,
-    //   },
-    //   {
-    //     answer: 'Lituânia',
-    //     image_path: getImageUrl('lithuan'),
-    //     game: europe,
-    //   },
-    //   { answer: 'Letônia', image_path: getImageUrl('latvia'), game: europe },
-    //   { answer: 'Estônia', image_path: getImageUrl('estonia'), game: europe },
-    //   { answer: 'Islândia', image_path: getImageUrl('iceland'), game: europe },
-    //   {
-    //     answer: 'Luxemburgo',
-    //     image_path: getImageUrl('luxemburg'),
-    //     game: europe,
-    //   },
-    //   {
-    //     answer: 'Liechtenstein',
-    //     image_path: getImageUrl('liechtenstein'),
-    //     game: europe,
-    //   },
-    //   { answer: 'Mônaco', image_path: getImageUrl('monaco'), game: europe },
-    //   {
-    //     answer: 'San Marino',
-    //     image_path: getImageUrl('sanmarino'),
-    //     game: europe,
-    //   },
+
     //   {
     //     answer: 'Cidade do Vaticano',
     //     image_path: getImageUrl('vatican'),
     //     game: europe,
     //   },
-    //   { answer: 'Andorra', image_path: getImageUrl('andorra'), game: europe },
 
-    //   { answer: 'Argélia', image_path: getImageUrl('algeria'), game: africa },
-
-    //   { answer: 'China', image_path: getImageUrl('china'), game: asia },
-    //   { answer: 'Japão', image_path: getImageUrl('japan'), game: asia },
-    //   { answer: 'Índia', image_path: getImageUrl('india'), game: asia },
-    //   { answer: 'Paquistão', image_path: getImageUrl('pakistan'), game: asia },
-    //   {
-    //     answer: 'Afeganistão',
-    //     image_path: getImageUrl('afghanistan'),
-    //     game: asia,
-    //   },
-    //   {
-    //     answer: 'Bangladesh',
-    //     image_path: getImageUrl('bangla'),
-    //     game: asia,
-    //   },
-    //   { answer: 'Irã', image_path: getImageUrl('iran'), game: asia },
-    //   { answer: 'Iraque', image_path: getImageUrl('iraq'), game: asia },
-    //   { answer: 'Israel', image_path: getImageUrl('israel'), game: asia },
-    //   {
-    //     answer: 'Arábia Saudita',
-    //     image_path: getImageUrl('saudi'),
-    //     game: asia,
-    //   },
-    //   {
-    //     answer: 'Coreia do Sul',
-    //     image_path: getImageUrl('skorea'),
-    //     game: asia,
-    //   },
-    //   {
-    //     answer: 'Coreia do Norte',
-    //     image_path: getImageUrl('nkorea'),
-    //     game: asia,
-    //   },
-    //   { answer: 'Indonésia', image_path: getImageUrl('indones'), game: asia },
-    //   { answer: 'Malásia', image_path: getImageUrl('malaysia'), game: asia },
-    //   {
-    //     answer: 'Filipinas',
-    //     image_path: getImageUrl('philipp'),
-    //     game: asia,
-    //   },
-    //   { answer: 'Tailândia', image_path: getImageUrl('thailand'), game: asia },
-    //   { answer: 'Turquia', image_path: getImageUrl('turkey'), game: asia },
-    //   {
-    //     answer: 'Uzbequistão',
-    //     image_path: getImageUrl('uzbekistan'),
-    //     game: asia,
-    //   },
-    //   {
-    //     answer: 'Cazaquistão',
-    //     image_path: getImageUrl('kazakhstan'),
-    //     game: asia,
-    //   },
-    //   {
-    //     answer: 'Austrália',
-    //     image_path: getImageUrl('austral'),
-    //     game: oceania,
-    //   },
-    //   {
-    //     answer: 'Nova Zelândia',
-    //     image_path: getImageUrl('newzealand'),
-    //     game: oceania,
-    //   },
-    //   { answer: 'Fiji', image_path: getImageUrl('fiji'), game: oceania },
-    //   { answer: 'Samoa', image_path: getImageUrl('samoa'), game: oceania },
-    //   { answer: 'Tonga', image_path: getImageUrl('tonga'), game: oceania },
-    //   {
-    //     answer: 'Ilhas Marshall',
-    //     image_path: getImageUrl('marshallislands'),
-    //     game: oceania,
-    //   },
-    //   {
-    //     answer: 'Kiribati',
-    //     image_path: getImageUrl('kiribati'),
-    //     game: oceania,
-    //   },
-    //   { answer: 'Vanuatu', image_path: getImageUrl('vanuatu'), game: oceania },
-    //   { answer: 'Palau', image_path: getImageUrl('palau'), game: oceania },
     //   { answer: 'Abkhazia', image_path: getImageUrl('abkhazia'), game: other },
     //   {
     //     answer: 'Afeganistão (2021)',
@@ -515,7 +657,6 @@ export class CardSeeder {
     //     game: other,
     //   },
 
-    //   { answer: 'Armenia', image_path: getImageUrl('armenia'), game: other },
     //   {
     //     answer: 'Artsakh (NagornoKarabakh)',
     //     image_path: getImageUrl('artsakh'),
@@ -527,13 +668,6 @@ export class CardSeeder {
     //     image_path: getImageUrl('ascensionisland'),
     //     game: other,
     //   },
-    //   {
-    //     answer: 'Azerbaijão',
-    //     image_path: getImageUrl('azerbaijan'),
-    //     game: other,
-    //   },
-
-    //   { answer: 'Bahrain', image_path: getImageUrl('bahrain'), game: other },
 
     //   {
     //     answer: 'Barotseland',
@@ -568,8 +702,6 @@ export class CardSeeder {
     //     image_path: getImageUrl('britishvirginislands'),
     //     game: other,
     //   },
-    //   { answer: 'Brunei', image_path: getImageUrl('brunei'), game: other },
-    //   { answer: 'Cambodia', image_path: getImageUrl('cambodia'), game: other },
 
     //   {
     //     answer: 'Catalonia',
@@ -603,12 +735,6 @@ export class CardSeeder {
     //   { answer: 'Curaçao', image_path: getImageUrl('curacao'), game: other },
     //   { answer: 'Cyprus', image_path: getImageUrl('cyprus'), game: other },
     //   { answer: 'Darfur', image_path: getImageUrl('darfur'), game: other },
-
-    //   {
-    //     answer: 'East Timor',
-    //     image_path: getImageUrl('easttimor'),
-    //     game: other,
-    //   },
 
     //   { answer: 'Eswatini', image_path: getImageUrl('eswatini'), game: other },
     //   {
@@ -667,16 +793,13 @@ export class CardSeeder {
     //   },
 
     //   { answer: 'Jersey', image_path: getImageUrl('jersey'), game: other },
-    //   { answer: 'Jordan', image_path: getImageUrl('jordan'), game: other },
+
     //   { answer: 'Kosovo', image_path: getImageUrl('kosovo'), game: other },
     //   {
     //     answer: 'Kurdistan',
     //     image_path: getImageUrl('kurdistan'),
     //     game: other,
     //   },
-    //   { answer: 'Kuwait', image_path: getImageUrl('kuwait'), game: other },
-    //   { answer: 'Laos', image_path: getImageUrl('laos'), game: other },
-    //   { answer: 'Lebanon', image_path: getImageUrl('lebanon'), game: other },
 
     //   {
     //     answer: 'Lord Howe Island',
@@ -684,8 +807,7 @@ export class CardSeeder {
     //     game: other,
     //   },
     //   { answer: 'Macau', image_path: getImageUrl('macau'), game: other },
-    //   { answer: 'Maldives', image_path: getImageUrl('maldives'), game: other },
-    //   { answer: 'Malta', image_path: getImageUrl('malta'), game: other },
+
     //   {
     //     answer: 'Martinique',
     //     image_path: getImageUrl('martinique'),
@@ -693,11 +815,7 @@ export class CardSeeder {
     //   },
 
     //   { answer: 'Mayotte', image_path: getImageUrl('mayotte'), game: other },
-    //   { answer: 'Moldova', image_path: getImageUrl('moldova'), game: other },
-    //   { answer: 'Mongólia', image_path: getImageUrl('mongolia'), game: other },
 
-    //   { answer: 'Myanmar', image_path: getImageUrl('myanmar'), game: other },
-    //   { answer: 'Nauru', image_path: getImageUrl('nauru'), game: other },
     //   { answer: 'Niue', image_path: getImageUrl('niue'), game: other },
     //   {
     //     answer: 'Norfolk Island',
@@ -725,11 +843,7 @@ export class CardSeeder {
     //     image_path: getImageUrl('palestine'),
     //     game: other,
     //   },
-    //   {
-    //     answer: 'Papua Nova Guiné',
-    //     image_path: getImageUrl('papuanewguinea'),
-    //     game: other,
-    //   },
+
     //   {
     //     answer: 'Pitcairn Islands',
     //     image_path: getImageUrl('pitcairnislands'),
@@ -740,10 +854,10 @@ export class CardSeeder {
     //     image_path: getImageUrl('puertorico'),
     //     game: other,
     //   },
-    //   { answer: 'Qatar', image_path: getImageUrl('qatar'), game: other },
+
     //   { answer: 'Quebec', image_path: getImageUrl('quebec'), game: other },
     //   { answer: 'Reunion', image_path: getImageUrl('reunion'), game: other },
-    //   { answer: 'Russia', image_path: getImageUrl('russia'), game: other },
+
     //   { answer: 'Saba', image_path: getImageUrl('saba'), game: other },
     //   {
     //     answer: 'Saint Barthélemy',
@@ -762,11 +876,6 @@ export class CardSeeder {
     //     game: other,
     //   },
 
-    //   {
-    //     answer: 'Singapore',
-    //     image_path: getImageUrl('singapore'),
-    //     game: other,
-    //   },
     //   {
     //     answer: 'Sint Eustatius',
     //     image_path: getImageUrl('sinteustatius'),
@@ -813,7 +922,7 @@ export class CardSeeder {
     //     image_path: getImageUrl('turksandcaicosislands'),
     //     game: other,
     //   },
-    //   { answer: 'Tuvalu', image_path: getImageUrl('tuvalu'), game: other },
+
     //   {
     //     answer: 'US Virgin Islands',
     //     image_path: getImageUrl('usvirginislands'),
@@ -840,13 +949,30 @@ export class CardSeeder {
     //     image_path: getImageUrl('alandislands'),
     //     game: other,
     //   },
-    //   {
-    //     answer: 'Federated States of Micronesia',
-    //     image_path: getImageUrl('federatedstatesofmicronesia'),
-    //     game: other,
-    //   },
+
     //   { answer: 'Tibete', image_path: getImageUrl('tibet'), game: other },
     // ];
+    const onuCards = [
+      ...africaCards,
+      ...americaCards,
+      ...asiaCards,
+      ...europaCards,
+      ...oceaniaCards,
+    ]
+      .filter(
+        (obj, index, self) =>
+          index === self.findIndex((o) => o.answer === obj.answer),
+      )
+      .map((c) => ({ ...c, game: onu }));
+
+    const cards = [
+      ...africaCards,
+      ...americaCards,
+      ...asiaCards,
+      ...europaCards,
+      ...oceaniaCards,
+      ...onuCards,
+    ];
 
     for (const card of cards) {
       await repo.save(card);

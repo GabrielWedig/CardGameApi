@@ -7,10 +7,11 @@ export class GameSeeder {
 
     const games = [
       { name: 'América' },
-      // { name: 'Europa' },
-      // { name: 'Asia' },
+      { name: 'Europa' },
+      { name: 'Asia' },
       { name: 'Africa' },
-      // { name: 'Oceania' },
+      { name: 'Oceania' },
+      { name: 'ONU' },
       // { name: 'Outros' },
     ];
 
