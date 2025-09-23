@@ -24,13 +24,8 @@ export class GameService {
     await this.gameRepository.update(id, data);
   }
 
-  async findAll() {
-    const games = await this.gameRepository.find({ relations: ['cards'] });
-    const gamesMap = games.map((game) => ({
-      ...game,
-      countCards: game.cards.length,
-    }));
-    return gamesMap;
+  findAll() {
+    return this.gameRepository.find({ relations: ['cards'] });
   }
 
   async findOne(id: number) {

@@ -1,6 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Card } from 'src/card/card.entity';
+import { User } from 'src/user/user.entity';
 
 @Entity()
 export class Game {
@@ -14,4 +21,10 @@ export class Game {
 
   @OneToMany(() => Card, (card) => card.game)
   cards: Card[];
+
+  @ManyToOne(() => User, (user) => user.games, {
+    onDelete: 'CASCADE',
+  })
+  @ApiProperty({ type: () => User })
+  createdBy: User;
 }
