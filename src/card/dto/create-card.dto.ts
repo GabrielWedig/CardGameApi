@@ -8,5 +8,5 @@ export class CreateCardDto {
 
   @ApiProperty({ example: 'www.minio.com', description: 'Url da imagem' })
   @IsNotEmpty()
-  image_path: string;
+  imagePath: string;
 }

@@ -10,7 +10,7 @@ export class Card {
 
   @Column()
   @ApiProperty()
-  image_path: string;
+  imagePath: string;
 
   @Column()
   @ApiProperty()
