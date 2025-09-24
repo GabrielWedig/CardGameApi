@@ -1,18 +1,36 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString, Matches } from 'class-validator';
 
 export class UpdateUserDto {
-  @ApiProperty({ example: 'Eai galera...', description: 'Sobre mim' })
-  about: string;
+  @ApiPropertyOptional({ example: 'Eai galera...', description: 'Sobre mim' })
+  @IsOptional()
+  @IsString()
+  about?: string;
 
-  @ApiProperty({ example: 'url.png', description: 'Foto' })
-  photo: string;
+  @ApiPropertyOptional({ example: 'url.png', description: 'Foto' })
+  @IsOptional()
+  @IsString()
+  photo?: string;
 
-  @ApiProperty({ example: 'eagleflying', description: 'Nome único' })
-  name: string;
+  @ApiPropertyOptional({ example: 'eagleflying', description: 'Nome único' })
+  @IsOptional()
+  @IsString()
+  name?: string;
 
-  @ApiProperty({ example: 'Senha10@', description: 'Senha' })
-  password: string;
+  @ApiPropertyOptional({ example: 'Senha10@', description: 'Senha' })
+  @IsOptional()
+  @IsString()
+  @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/, {
+    message:
+      'Senha deve ter no mínimo 8 caracteres, pelo menos uma letra maiúscula, um número e um caractere especial',
+  })
+  password?: string;
 
-  @ApiProperty({ example: 'Eagle Flying 99', description: 'Nome de exibição' })
-  displayName: string;
+  @ApiPropertyOptional({
+    example: 'Eagle Flying 99',
+    description: 'Nome de exibição',
+  })
+  @IsOptional()
+  @IsString()
+  displayName?: string;
 }

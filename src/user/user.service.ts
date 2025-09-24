@@ -69,27 +69,22 @@ export class UserService {
       user.password = hashedPassword;
     }
 
-    // if (data.photo) {
-
-    // }
-    // normais
     user.displayName = data.displayName ?? user.displayName;
+    user.photo = data.photo ?? user.photo;
+    user.about = data.about ?? user.about;
 
     await this.userRepository.update(id, data);
   }
 
   findAll() {
-    return this.userRepository.find({ relations: ['cards'] });
+    return this.userRepository.find();
   }
 
   async findOne(id: number) {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      relations: ['cards'],
-    });
+    const user = await this.userRepository.findOneBy({ id });
 
     if (!user) {
-      throw new NotFoundException('Jogo não encontrado');
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     return user;
@@ -99,7 +94,7 @@ export class UserService {
     const user = await this.userRepository.findOneBy({ id });
 
     if (!user) {
-      throw new NotFoundException('Jogo não encontrado');
+      throw new NotFoundException('Usuário não encontrado');
     }
 
     await this.userRepository.delete(id);

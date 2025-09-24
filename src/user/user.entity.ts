@@ -35,6 +35,7 @@ export class User {
 
   @ManyToOne(() => Nationality, (nationality) => nationality.users, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   @ApiProperty({ type: () => Nationality })
   nationality: Nationality;

@@ -11,6 +11,7 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtProtected } from 'src/auth/jwt-protected.decorator';
 
 @ApiTags('Usuários')
 @Controller('users')
@@ -24,6 +25,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @JwtProtected()
   @ApiOperation({ summary: 'Alterar um usuário' })
   update(@Param('id') id: string, @Body() data: UpdateUserDto) {
     return this.userService.update(+id, data);
@@ -42,6 +44,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @JwtProtected()
   @ApiOperation({ summary: 'Deletar um usuário pelo ID' })
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);

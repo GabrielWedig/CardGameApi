@@ -24,6 +24,7 @@ export class Game {
 
   @ManyToOne(() => User, (user) => user.games, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   @ApiProperty({ type: () => User })
   createdBy: User;

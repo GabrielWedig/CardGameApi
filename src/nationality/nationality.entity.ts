@@ -12,6 +12,10 @@ export class Nationality {
   @ApiProperty()
   name: string;
 
+  @Column()
+  @ApiProperty()
+  photo: string;
+
   @OneToMany(() => User, (user) => user.nationality)
   users: User[];
 }
