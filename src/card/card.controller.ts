@@ -14,7 +14,7 @@ import { CardService } from './card.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { JwtProtected } from 'src/auth/jwt-protected.decorator';
-import { AuthenticatedUser } from 'src/auth/jwt.strategy';
+import { AuthenticatedRequest } from 'src/auth/types/auth.types';
 
 @ApiTags('Cards')
 @Controller('cards')
@@ -24,10 +24,7 @@ export class CardController {
   @Post()
   @JwtProtected()
   @ApiOperation({ summary: 'Criar um novo card' })
-  create(
-    @Body() card: CreateCardDto,
-    @Req() req: Request & { user: AuthenticatedUser },
-  ) {
+  create(@Body() card: CreateCardDto, @Req() req: AuthenticatedRequest) {
     return this.cardService.create(card, req.user.id);
   }
 
@@ -37,7 +34,7 @@ export class CardController {
   update(
     @Param('id') id: string,
     @Body() data: UpdateCardDto,
-    @Req() req: Request & { user: AuthenticatedUser },
+    @Req() req: AuthenticatedRequest,
   ) {
     return this.cardService.update(+id, data, req.user.id);
   }
@@ -51,10 +48,7 @@ export class CardController {
   @Delete(':id')
   @JwtProtected()
   @ApiOperation({ summary: 'Deletar um card pelo ID' })
-  remove(
-    @Param('id') id: string,
-    @Req() req: Request & { user: AuthenticatedUser },
-  ) {
+  remove(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
     return this.cardService.remove(+id, req.user.id);
   }
 }

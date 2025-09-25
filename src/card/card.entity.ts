@@ -15,7 +15,7 @@ export class Card {
   @ManyToOne(() => Game, (game) => game.cards, { onDelete: 'CASCADE' })
   game: Game;
 
-  validateUser(userId: number) {
-    return this.game.createdBy.id === userId;
+  canEdit(userId: number) {
+    return this.game.canEdit(userId);
   }
 }

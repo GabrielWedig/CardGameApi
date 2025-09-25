@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Game } from './game.entity';
@@ -23,17 +27,12 @@ export class GameService {
     return user;
   }
 
-  async getGame(gameId: number, userId?: number) {
+  async getGame(id: number, relations?: string[]) {
     const game = await this.gameRepository.findOne({
-      where: { id: gameId },
-      relations: ['cards', 'createdBy'],
+      where: { id },
+      relations,
     });
-
     if (!game) {
-      throw new NotFoundException('Jogo não encontrado');
-    }
-
-    if (userId && !game.validateUser(userId)) {
       throw new NotFoundException('Jogo não encontrado');
     }
     return game;
@@ -46,7 +45,12 @@ export class GameService {
   }
 
   async update(id: number, data: UpdateGameDto, userId: number) {
-    const game = await this.getGame(id, userId);
+    const game = await this.getGame(id, ['createdBy']);
+
+    if (!game.canEdit(userId)) {
+      throw new UnauthorizedException();
+    }
+
     game.name = data.name ?? game.name;
     await this.gameRepository.save(game);
   }
@@ -64,7 +68,8 @@ export class GameService {
   }
 
   async findOne(id: number) {
-    const game = await this.getGame(id);
+    const game = await this.getGame(id, ['cards', 'createdBy']);
+
     return {
       ...game,
       cards: game.cards.length,
@@ -73,7 +78,12 @@ export class GameService {
   }
 
   async remove(id: number, userId: number) {
-    await this.getGame(id, userId);
+    const game = await this.getGame(id, ['createdBy']);
+
+    if (!game.canEdit(userId)) {
+      throw new UnauthorizedException();
+    }
+
     await this.gameRepository.delete(id);
   }
 }

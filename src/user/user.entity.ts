@@ -47,4 +47,8 @@ export class User {
   @ManyToMany(() => User, (user) => user.friends)
   @JoinTable()
   friends: User[];
+
+  canEdit(userId: number) {
+    return this.id === userId;
+  }
 }

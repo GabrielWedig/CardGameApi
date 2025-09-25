@@ -26,7 +26,7 @@ export class Game {
   @JoinColumn({ name: 'createdBy' })
   createdBy: User;
 
-  validateUser(userId: number) {
-    return userId === this.createdBy.id;
+  canEdit(userId: number) {
+    return this.createdBy.canEdit(userId);
   }
 }

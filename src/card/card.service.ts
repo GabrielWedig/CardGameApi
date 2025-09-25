@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './card.entity';
@@ -15,31 +19,24 @@ export class CardService {
     private gameRepository: Repository<Game>,
   ) {}
 
-  async getCard(id: number, userId: number) {
+  async getCard(id: number, relations: string[]) {
     const card = await this.cardRepository.findOne({
       where: { id },
-      relations: ['game', 'game.createdBy'],
+      relations,
     });
     if (!card) {
-      throw new NotFoundException('Card não encontrado');
-    }
-    if (!card.validateUser(userId)) {
       throw new NotFoundException('Card não encontrado');
     }
     return card;
   }
 
-  async getGame(gameId: number, userId?: number) {
+  async getGame(id: number, relations?: string[]) {
     const game = await this.gameRepository.findOne({
-      where: { id: gameId },
-      relations: ['createdBy'],
+      where: { id },
+      relations,
     });
 
     if (!game) {
-      throw new NotFoundException('Jogo não encontrado');
-    }
-
-    if (userId && !game.validateUser(userId)) {
       throw new NotFoundException('Jogo não encontrado');
     }
     return game;
@@ -53,13 +50,22 @@ export class CardService {
   }
 
   async create(data: CreateCardDto, userId: number) {
-    const game = await this.getGame(data.gameId, userId);
+    const game = await this.getGame(data.gameId, ['createdBy']);
+
+    if (!game.canEdit(userId)) {
+      throw new UnauthorizedException();
+    }
+
     const card = { ...data, game };
     await this.cardRepository.save(card);
   }
 
   async update(id: number, data: UpdateCardDto, userId: number) {
-    const card = await this.getCard(id, userId);
+    const card = await this.getCard(id, ['game', 'game.createdBy']);
+
+    if (!card.canEdit(userId)) {
+      throw new UnauthorizedException();
+    }
 
     card.answer = data.answer ?? card.answer;
     card.imagePath = data.imagePath ?? card.imagePath;
@@ -68,13 +74,19 @@ export class CardService {
   }
 
   async findByGame(gameId: number) {
-    const game = await this.getGame(gameId);
-    const cards = await this.cardRepository.findBy({ game });
+    const cards = await this.cardRepository.find({
+      where: { game: { id: gameId } },
+    });
     return this.mixCards(cards);
   }
 
   async remove(id: number, userId: number) {
-    await this.getCard(id, userId);
+    const card = await this.getCard(id, ['game', 'game.createdBy']);
+
+    if (!card.canEdit(userId)) {
+      throw new UnauthorizedException();
+    }
+
     await this.cardRepository.delete(id);
   }
 }

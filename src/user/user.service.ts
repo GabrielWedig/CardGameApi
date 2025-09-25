@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,21 +21,52 @@ export class UserService {
     private nationalityRepository: Repository<Nationality>,
   ) {}
 
-  async create(data: CreateUserDto) {
+  async getNationality(id: number) {
     const nationality = await this.nationalityRepository.findOneBy({
-      id: data.nationalityId,
+      id,
     });
-
     if (!nationality) {
       throw new NotFoundException('Nacionalidade não encontrada');
     }
+    return nationality;
+  }
 
+  async getUser(id: number, relations?: string[]) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations,
+    });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+    return user;
+  }
+
+  async validateName(name: string) {
+    const exists = await this.userRepository.exists({
+      where: { name },
+    });
+    if (exists) {
+      throw new BadRequestException('Já existe um usuário com esse nome');
+    }
+    return name;
+  }
+
+  async hashPassword(password: string) {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(data.password, salt);
-    const defaultPhoto = 'defaultPhoto';
+    return await bcrypt.hash(password, salt);
+  }
 
-    const newUser = {
-      name: data.name,
+  async create(data: CreateUserDto) {
+    const name = await this.validateName(data.name);
+    const nationality = await this.getNationality(data.nationalityId);
+    const hashedPassword = await this.hashPassword(data.password);
+
+    const defaultPhoto =
+      'https://res.cloudinary.com/dqwif7teu/image/upload/v1758653165/users/vgvgxqncbaro2upu6lmw.png';
+
+    const user = {
+      name: name,
       password: hashedPassword,
       displayName: data.displayName,
       photo: defaultPhoto,
@@ -42,31 +74,22 @@ export class UserService {
       since: new Date(),
       level: 0,
     };
-    await this.userRepository.save(newUser);
+    await this.userRepository.save(user);
   }
 
-  async update(id: number, data: UpdateUserDto) {
-    const user = await this.userRepository.findOneBy({ id });
+  async update(id: number, data: UpdateUserDto, userId: number) {
+    const user = await this.getUser(id);
 
-    if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+    if (!user.canEdit(userId)) {
+      throw new UnauthorizedException();
     }
 
     if (data.name) {
-      const exists = await this.userRepository.exists({
-        where: { name: data.name },
-      });
-
-      if (exists) {
-        throw new BadRequestException('Já existe alguém com esse nome');
-      }
-      user.name = data.name;
+      user.name = await this.validateName(data.name);
     }
 
     if (data.password) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(data.password, salt);
-      user.password = hashedPassword;
+      user.password = await this.hashPassword(data.password);
     }
 
     user.displayName = data.displayName ?? user.displayName;
@@ -76,25 +99,31 @@ export class UserService {
     await this.userRepository.update(id, data);
   }
 
-  findAll() {
-    return this.userRepository.find();
-  }
-
   async findOne(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.getUser(id, ['nationality', 'games', 'friends']);
 
-    if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
-    }
-
-    return user;
+    return {
+      id: user.id,
+      name: user.name,
+      displayName: user.displayName,
+      photo: user.photo,
+      nationality: {
+        name: user.nationality.name,
+        photo: user.nationality.photo,
+      },
+      about: user.about,
+      since: user.since,
+      level: user.level,
+      friends: user.friends.length,
+      games: user.games.length,
+    };
   }
 
-  async remove(id: number) {
-    const user = await this.userRepository.findOneBy({ id });
+  async remove(id: number, userId: number) {
+    const user = await this.getUser(id);
 
-    if (!user) {
-      throw new NotFoundException('Usuário não encontrado');
+    if (!user.canEdit(userId)) {
+      throw new UnauthorizedException();
     }
 
     await this.userRepository.delete(id);
