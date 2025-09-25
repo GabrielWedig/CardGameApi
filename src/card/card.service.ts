@@ -38,6 +38,17 @@ export class CardService {
     return card;
   }
 
+  // const shuffledCards = [...game.cards];
+  // for (let i = shuffledCards.length - 1; i > 0; i--) {
+  //   const j = Math.floor(Math.random() * (i + 1));
+  //   [shuffledCards[i], shuffledCards[j]] = [
+  //     shuffledCards[j],
+  //     shuffledCards[i],
+  //   ];
+  // }
+
+  // game.cards = shuffledCards;
+
   async remove(id: number) {
     const card = await this.cardRepository.findOneBy({ id });
 

@@ -18,7 +18,7 @@ export class UserSeeder {
 
     await userService.create({
       name: 'admin',
-      password: 'Senha10@',
+      password: process.env.ADMIN_PASSWORD as string,
       displayName: 'CardGame!',
       nationalityId: nationality.id,
     });

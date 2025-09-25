@@ -4,19 +4,17 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
 import { Card } from 'src/card/card.entity';
 import { User } from 'src/user/user.entity';
 
 @Entity()
 export class Game {
   @PrimaryGeneratedColumn()
-  @ApiProperty()
   id: number;
 
   @Column()
-  @ApiProperty()
   name: string;
 
   @OneToMany(() => Card, (card) => card.game)
@@ -24,8 +22,7 @@ export class Game {
 
   @ManyToOne(() => User, (user) => user.games, {
     onDelete: 'CASCADE',
-    nullable: false,
   })
-  @ApiProperty({ type: () => User })
+  @JoinColumn({ name: 'createdBy' })
   createdBy: User;
 }

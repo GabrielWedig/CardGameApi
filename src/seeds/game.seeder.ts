@@ -7,7 +7,7 @@ export class GameSeeder {
     const repo = dataSource.getRepository(Game);
     const userRepo = dataSource.getRepository(User);
 
-    const user = await userRepo.findOneBy({ name: 'admin ' });
+    const user = await userRepo.findOneBy({ name: 'admin' });
 
     if (!user) {
       throw new Error('Usuário não encontrado.');

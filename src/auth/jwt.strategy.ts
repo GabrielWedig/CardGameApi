@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
@@ -13,8 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor() {
     const options: StrategyOptions = {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey:
-        process.env.JWT_SECRET || 'uma-secret-muito-longa-e-secreta-por-padrao',
+      secretOrKey: process.env.JWT_SECRET as string,
     };
     super(options);
   }
