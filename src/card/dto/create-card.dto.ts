@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCardDto {
@@ -11,4 +11,9 @@ export class CreateCardDto {
   @IsString()
   @IsNotEmpty()
   imagePath: string;
+
+  @ApiProperty({ example: 1, description: 'ID do jogo' })
+  @IsNumber()
+  @IsNotEmpty()
+  gameId: number;
 }

@@ -25,4 +25,8 @@ export class Game {
   })
   @JoinColumn({ name: 'createdBy' })
   createdBy: User;
+
+  validateUser(userId: number) {
+    return userId === this.createdBy.id;
+  }
 }

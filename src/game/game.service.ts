@@ -33,7 +33,7 @@ export class GameService {
       throw new NotFoundException('Jogo não encontrado');
     }
 
-    if (userId && game.createdBy.id !== userId) {
+    if (userId && !game.validateUser(userId)) {
       throw new NotFoundException('Jogo não encontrado');
     }
     return game;

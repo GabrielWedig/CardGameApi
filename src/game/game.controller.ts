@@ -13,7 +13,7 @@ import { CreateGameDto } from './dto/create-game.dto';
 import { GameService } from './game.service';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { JwtProtected } from 'src/auth/jwt-protected.decorator';
-import { JwtPayload } from 'src/auth/jwt.strategy';
+import { AuthenticatedUser } from 'src/auth/jwt.strategy';
 
 @ApiTags('Jogos')
 @Controller('games')
@@ -25,9 +25,9 @@ export class GameController {
   @ApiOperation({ summary: 'Criar um novo jogo' })
   create(
     @Body() game: CreateGameDto,
-    @Req() req: Request & { user: JwtPayload },
+    @Req() req: Request & { user: AuthenticatedUser },
   ) {
-    return this.gameService.create(game, req.user.sub);
+    return this.gameService.create(game, req.user.id);
   }
 
   @Put(':id')
@@ -36,9 +36,9 @@ export class GameController {
   update(
     @Param('id') id: string,
     @Body() data: UpdateGameDto,
-    @Req() req: Request & { user: JwtPayload },
+    @Req() req: Request & { user: AuthenticatedUser },
   ) {
-    return this.gameService.update(+id, data, req.user.sub);
+    return this.gameService.update(+id, data, req.user.id);
   }
 
   @Get()
@@ -56,7 +56,10 @@ export class GameController {
   @Delete(':id')
   @JwtProtected()
   @ApiOperation({ summary: 'Deletar um jogo pelo ID' })
-  remove(@Param('id') id: string, @Req() req: Request & { user: JwtPayload }) {
-    return this.gameService.remove(+id, req.user.sub);
+  remove(
+    @Param('id') id: string,
+    @Req() req: Request & { user: AuthenticatedUser },
+  ) {
+    return this.gameService.remove(+id, req.user.id);
   }
 }

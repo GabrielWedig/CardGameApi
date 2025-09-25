@@ -30,7 +30,6 @@ export class User {
   @ManyToOne(() => Nationality, (nationality) => nationality.users, {
     onDelete: 'CASCADE',
   })
-  // @JoinColumn({ name: 'nationalityId' })
   nationality: Nationality;
 
   @Column({ nullable: true })
