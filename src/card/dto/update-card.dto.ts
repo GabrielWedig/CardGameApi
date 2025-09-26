@@ -1,14 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateCardDto {
   @ApiProperty({ example: 'Brasil', description: 'Resposta' })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
-  answer: string;
+  answer?: string;
 
   @ApiProperty({ example: 'www.minio.com', description: 'Url da imagem' })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
-  imagePath: string;
+  imagePath?: string;
 }

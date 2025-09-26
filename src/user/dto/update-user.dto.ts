@@ -15,6 +15,10 @@ export class UpdateUserDto {
   @ApiPropertyOptional({ example: 'eagleflying', description: 'Nome único' })
   @IsOptional()
   @IsString()
+  @Matches(/^[A-Za-z0-9]{1,15}$/, {
+    message:
+      'O nome deve conter apenas letras e números, sem espaços ou caracteres especiais, e ter no máximo 15 caracteres',
+  })
   name?: string;
 
   @ApiPropertyOptional({ example: 'Senha10@', description: 'Senha' })

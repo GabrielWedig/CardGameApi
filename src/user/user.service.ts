@@ -11,6 +11,7 @@ import { Nationality } from 'src/nationality/nationality.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     private userRepository: Repository<User>,
     @InjectRepository(Nationality)
     private nationalityRepository: Repository<Nationality>,
+    private jwtService: JwtService,
   ) {}
 
   async getNationality(id: number) {
@@ -65,7 +67,7 @@ export class UserService {
     const defaultPhoto =
       'https://res.cloudinary.com/dqwif7teu/image/upload/v1758653165/users/vgvgxqncbaro2upu6lmw.png';
 
-    const user = {
+    const newUser = {
       name: name,
       password: hashedPassword,
       displayName: data.displayName,
@@ -74,7 +76,12 @@ export class UserService {
       since: new Date(),
       level: 0,
     };
-    await this.userRepository.save(user);
+    const user = await this.userRepository.save(newUser);
+    const payload = { sub: user.id, name: user.name };
+
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
   }
 
   async update(id: number, data: UpdateUserDto, userId: number) {
