@@ -7,6 +7,7 @@ import {
   Delete,
   Put,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UserService } from './user.service';
@@ -35,6 +36,13 @@ export class UserController {
     @Req() req: AuthenticatedRequest,
   ) {
     return this.userService.update(+id, data, req.user.id);
+  }
+
+  @Get('validate-name')
+  @ApiOperation({ summary: 'Valida se o nome está disponível.' })
+  async validateName(@Query('name') name: string) {
+    const nameExists = await this.userService.nameExists(name);
+    return { isValid: !nameExists };
   }
 
   @Get(':id')

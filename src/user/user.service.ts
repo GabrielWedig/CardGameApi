@@ -44,11 +44,15 @@ export class UserService {
     return user;
   }
 
-  async validateName(name: string) {
-    const exists = await this.userRepository.exists({
+  async nameExists(name: string) {
+    return await this.userRepository.exists({
       where: { name },
     });
-    if (exists) {
+  }
+
+  async validateName(name: string) {
+    const nameExists = await this.nameExists(name);
+    if (nameExists) {
       throw new BadRequestException('Já existe um usuário com esse nome');
     }
     return name;
