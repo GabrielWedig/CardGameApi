@@ -7,6 +7,7 @@ import { CardModule } from './card/card.module';
 import { UserModule } from './user/user.module';
 import { NationalityModule } from './nationality/nationality.module';
 import { AuthModule } from './auth/auth.module';
+import { RequestModule } from './request/request.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     NationalityModule,
     AuthModule,
+    RequestModule,
   ],
 })
 export class AppModule {}

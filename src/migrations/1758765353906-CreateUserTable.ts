@@ -71,44 +71,9 @@ export class CreateUserTable1758765353906 implements MigrationInterface {
         onDelete: 'CASCADE',
       }),
     );
-
-    await queryRunner.createTable(
-      new Table({
-        name: 'user_friends_user',
-        columns: [
-          {
-            name: 'userId_1',
-            type: 'integer',
-            isPrimary: true,
-          },
-          {
-            name: 'userId_2',
-            type: 'integer',
-            isPrimary: true,
-          },
-        ],
-      }),
-      true,
-    );
-
-    await queryRunner.createForeignKeys('user_friends_user', [
-      new TableForeignKey({
-        columnNames: ['userId_1'],
-        referencedTableName: 'user',
-        referencedColumnNames: ['id'],
-        onDelete: 'CASCADE',
-      }),
-      new TableForeignKey({
-        columnNames: ['userId_2'],
-        referencedTableName: 'user',
-        referencedColumnNames: ['id'],
-        onDelete: 'CASCADE',
-      }),
-    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user_friends_user');
     await queryRunner.dropTable('user');
   }
 }

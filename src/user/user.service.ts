@@ -110,6 +110,7 @@ export class UserService {
     await this.userRepository.update(id, data);
   }
 
+  // fazer um auth/me
   async findOne(id: number) {
     const user = await this.getUser(id, ['nationality', 'games', 'friends']);
 
@@ -125,7 +126,7 @@ export class UserService {
       about: user.about,
       since: user.since,
       level: user.level,
-      friends: user.friends.length,
+      friends: user.getFriends().length,
       games: user.games.length,
     };
   }

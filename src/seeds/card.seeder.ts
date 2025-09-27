@@ -966,12 +966,12 @@ export class CardSeeder {
       .map((c) => ({ ...c, game: onu }));
 
     const cards = [
-      ...africaCards,
+      //...africaCards,
       ...americaCards,
-      ...asiaCards,
-      ...europaCards,
-      ...oceaniaCards,
-      ...onuCards,
+      // ...asiaCards,
+      // ...europaCards,
+      // ...oceaniaCards,
+      // ...onuCards,
     ];
 
     for (const card of cards) {

@@ -3,12 +3,11 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
-  ManyToMany,
   ManyToOne,
-  JoinTable,
 } from 'typeorm';
 import { Game } from 'src/game/game.entity';
 import { Nationality } from 'src/nationality/nationality.entity';
+import { Request } from 'src/request/request.entity';
 
 @Entity()
 export class User {
@@ -44,9 +43,27 @@ export class User {
   @Column()
   level: number;
 
-  @ManyToMany(() => User, (user) => user.friends)
-  @JoinTable()
-  friends: User[];
+  @OneToMany(() => Request, (request) => request.sender)
+  sentRequests: Request[];
+
+  @OneToMany(() => Request, (request) => request.receiver)
+  receivedRequests: Request[];
+
+  getFriends() {
+    const acceptedSent = this.sentRequests
+      .filter((req) => req.isAccepted)
+      .map((req) => req.receiver);
+
+    const acceptedReceived = this.receivedRequests
+      .filter((req) => req.isAccepted)
+      .map((req) => req.sender);
+
+    return [...acceptedSent, ...acceptedReceived];
+  }
+
+  getPendingRequests() {
+    return this.receivedRequests.filter((req) => !req.isAccepted);
+  }
 
   canEdit(userId: number) {
     return this.id === userId;
