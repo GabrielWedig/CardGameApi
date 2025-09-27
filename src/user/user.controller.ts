@@ -45,10 +45,10 @@ export class UserController {
     return { isValid: !nameExists };
   }
 
-  @Get(':id')
+  @Get(':id/profile')
   @ApiOperation({ summary: 'Buscar um usuário pelo ID' })
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.profile(+id);
   }
 
   @Delete(':id')

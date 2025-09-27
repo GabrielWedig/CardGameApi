@@ -1,7 +1,9 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
+import { AuthenticatedRequest } from './types/auth.types';
+import { JwtProtected } from './jwt-protected.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -9,8 +11,14 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Fazer login' })
-  async login(@Body() data: LoginDto) {
-    const user = await this.authService.validateUser(data.name, data.password);
-    return this.authService.login(user);
+  login(@Body() data: LoginDto) {
+    return this.authService.login(data);
+  }
+
+  @Get('me')
+  @JwtProtected()
+  @ApiOperation({ summary: 'Retorna dados básicos do usuário' })
+  me(@Req() req: AuthenticatedRequest) {
+    return this.authService.me(req.user.id);
   }
 }
