@@ -180,6 +180,7 @@ export class UserService {
           nacionalityPhoto: user.nationality.photo,
           requestId: request?.id,
           isFriend: request?.isAccepted,
+          canAnswer: request?.receiver.id === userId,
         };
       }),
     };
