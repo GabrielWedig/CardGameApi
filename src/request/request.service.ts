@@ -75,6 +75,11 @@ export class RequestService {
 
   async accept(id: number, userId: number) {
     const request = await this.getRequest(id, userId);
+
+    if (!request.canAccept(userId)) {
+      throw new BadRequestException('Você não pode responder essa solicitação');
+    }
+
     request.isAccepted = true;
     await this.requestRepository.update(id, request);
   }

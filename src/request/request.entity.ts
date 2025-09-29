@@ -18,6 +18,10 @@ export class Request {
   isAccepted: boolean;
 
   canAnswer(userId: number) {
+    return this.receiver.id === userId || this.sender.id === userId;
+  }
+
+  canAccept(userId: number) {
     return this.receiver.id === userId;
   }
 }
