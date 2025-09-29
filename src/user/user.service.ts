@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { FilterPaginationDto } from 'src/common/dto/pagination.dto';
+import { Request } from 'src/request/request.entity';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,8 @@ export class UserService {
     private userRepository: Repository<User>,
     @InjectRepository(Nationality)
     private nationalityRepository: Repository<Nationality>,
+    @InjectRepository(Request)
+    private requestRepository: Repository<Request>,
     private jwtService: JwtService,
   ) {}
 
@@ -128,6 +131,20 @@ export class UserService {
   async find(params: FilterPaginationDto, userId: number) {
     await this.getUser(userId);
 
+    const requests = await this.requestRepository.find({
+      where: [
+        { sender: { id: userId }, isAccepted: true },
+        { receiver: { id: userId }, isAccepted: true },
+      ],
+      relations: ['receiver', 'sender'],
+    });
+
+    const friends = requests
+      .filter((request) => request.isAccepted)
+      .map((request) =>
+        request.sender.id === userId ? request.receiver : request.sender,
+      );
+
     const page = params.page ?? 1;
     const limit = params.limit ?? 50;
     const skip = (page - 1) * limit;
@@ -165,9 +182,10 @@ export class UserService {
         level: user.level,
         photo: user.photo,
         nacionalityPhoto: user.nationality.photo,
-        requested: user.receivedRequests.some(
+        requested: requests.some(
           (request) => request.sender.id === userId && !request.isAccepted,
         ),
+        isFriend: friends.some((friend) => friend.id === user.id),
       })),
     };
   }

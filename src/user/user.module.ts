@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Nationality } from 'src/nationality/nationality.entity';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
+import { Request } from 'src/request/request.entity';
 
 const jwtOptions: JwtModuleOptions = {
   secret: process.env.JWT_SECRET as string,
@@ -13,7 +14,7 @@ const jwtOptions: JwtModuleOptions = {
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Nationality]),
+    TypeOrmModule.forFeature([User, Nationality, Request]),
     JwtModule.register(jwtOptions),
   ],
   controllers: [UserController],
