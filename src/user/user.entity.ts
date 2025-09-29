@@ -48,24 +48,4 @@ export class User {
 
   @OneToMany(() => Request, (request) => request.receiver)
   receivedRequests: Request[];
-
-  getFriends() {
-    const acceptedSent = this.sentRequests
-      .filter((req) => req.isAccepted)
-      .map((req) => req.receiver);
-
-    const acceptedReceived = this.receivedRequests
-      .filter((req) => req.isAccepted)
-      .map((req) => req.sender);
-
-    return [...acceptedSent, ...acceptedReceived];
-  }
-
-  getPendingRequests() {
-    return this.receivedRequests.filter((req) => !req.isAccepted);
-  }
-
-  canEdit(userId: number) {
-    return this.id === userId;
-  }
 }

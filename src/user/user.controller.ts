@@ -9,7 +9,7 @@ import {
   Req,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,15 +27,11 @@ export class UserController {
     return this.userService.create(game);
   }
 
-  @Put(':id')
+  @Put('update')
   @JwtProtected()
-  @ApiOperation({ summary: 'Alterar um usuário' })
-  update(
-    @Param('id') id: string,
-    @Body() data: UpdateUserDto,
-    @Req() req: AuthenticatedRequest,
-  ) {
-    return this.userService.update(+id, data, req.user.id);
+  @ApiOperation({ summary: 'Alterar usuário logado' })
+  update(@Body() data: UpdateUserDto, @Req() req: AuthenticatedRequest) {
+    return this.userService.update(req.user.id, data);
   }
 
   @Get('validate-name')
@@ -46,15 +42,32 @@ export class UserController {
   }
 
   @Get(':id/profile')
-  @ApiOperation({ summary: 'Buscar um usuário pelo ID' })
-  findOne(@Param('id') id: string) {
-    return this.userService.profile(+id);
+  @ApiOperation({ summary: 'Retorna perfil do usuário por ID' })
+  profile(@Param('id') id: number, @Req() req: AuthenticatedRequest) {
+    return this.userService.profile(req.user.id);
   }
 
-  @Delete(':id')
+  @Get()
+  @ApiOperation({
+    summary: 'Buscar todos usuários',
+  })
   @JwtProtected()
-  @ApiOperation({ summary: 'Deletar um usuário pelo ID' })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'search', required: false })
+  find(
+    @Req() req: AuthenticatedRequest,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('search') search?: string,
+  ) {
+    return this.userService.find({ search, page, limit }, req.user.id);
+  }
+
+  @Delete('remove')
+  @JwtProtected()
+  @ApiOperation({ summary: 'Deletar usuário logado' })
   remove(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
-    return this.userService.remove(+id, req.user.id);
+    return this.userService.remove(req.user.id);
   }
 }

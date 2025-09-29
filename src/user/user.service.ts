@@ -2,16 +2,16 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { And, Equal, FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Nationality } from 'src/nationality/nationality.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { FilterPaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class UserService {
@@ -88,12 +88,8 @@ export class UserService {
     };
   }
 
-  async update(id: number, data: UpdateUserDto, userId: number) {
+  async update(id: number, data: UpdateUserDto) {
     const user = await this.getUser(id);
-
-    if (!user.canEdit(userId)) {
-      throw new UnauthorizedException();
-    }
 
     if (data.name) {
       user.name = await this.validateName(data.name);
@@ -125,18 +121,59 @@ export class UserService {
       about: user.about,
       since: user.since,
       level: user.level,
-      friends: user.getFriends().length,
       games: user.games.length,
     };
   }
 
-  async remove(id: number, userId: number) {
-    const user = await this.getUser(id);
+  async find(params: FilterPaginationDto, userId: number) {
+    await this.getUser(userId);
 
-    if (!user.canEdit(userId)) {
-      throw new UnauthorizedException();
+    const page = params.page ?? 1;
+    const limit = params.limit ?? 50;
+    const skip = (page - 1) * limit;
+
+    const searchId = isNaN(Number(params.search));
+    let where: FindOptionsWhere<User>[] | FindOptionsWhere<User> = {
+      id: Not(userId),
+    };
+
+    if (params.search && !searchId) {
+      where = { id: And(Not(userId), Equal(Number(params.search))) };
+    }
+    if (params.search && searchId) {
+      where = [
+        { id: Not(userId), name: ILike(`%${params.search.trim()}%`) },
+        { id: Not(userId), displayName: ILike(`%${params.search.trim()}%`) },
+      ];
     }
 
+    const [users, total] = await this.userRepository.findAndCount({
+      where,
+      skip,
+      take: limit,
+      relations: ['nationality', 'receivedRequests', 'receivedRequests.sender'],
+    });
+
+    return {
+      total,
+      limit,
+      page,
+      items: users.map((user) => ({
+        id: user.id,
+        displayName: user.displayName,
+        name: user.name,
+        level: user.level,
+        photo: user.photo,
+        nacionalityPhoto: user.nationality.photo,
+        requested: user.receivedRequests.some(
+          (request) => request.sender.id === userId && !request.isAccepted,
+        ),
+      })),
+    };
+  }
+
+  async remove(id: number) {
+    await this.getUser(id);
     await this.userRepository.delete(id);
   }
 }

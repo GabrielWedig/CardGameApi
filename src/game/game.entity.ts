@@ -27,6 +27,6 @@ export class Game {
   createdBy: User;
 
   canEdit(userId: number) {
-    return this.createdBy.canEdit(userId);
+    return this.createdBy.id === userId;
   }
 }
