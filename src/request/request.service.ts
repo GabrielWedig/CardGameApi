@@ -30,7 +30,7 @@ export class RequestService {
   async getRequest(id: number, userId: number) {
     const request = await this.requestRepository.findOne({
       where: { id },
-      relations: ['receiver'],
+      relations: ['receiver', 'sender'],
     });
 
     if (!request) {
