@@ -115,34 +115,29 @@ export class RequestService {
       ],
     });
 
-    let response: { requestId: number; user: User }[] = requests.map(
-      (request) => ({
-        requestId: request.id,
-        user: request.sender,
-      }),
-    );
+    let users: (User & { requestId: number })[] = requests.map((request) => ({
+      requestId: request.id,
+      ...request.sender,
+    }));
 
     if (params.isAccepted) {
-      response = requests.map((request) => ({
+      users = requests.map((request) => ({
         requestId: request.id,
-        user: request.sender.id !== userId ? request.sender : request.receiver,
+        ...(request.sender.id !== userId ? request.sender : request.receiver),
       }));
     }
-
     return {
       page,
       limit,
-      total: response.length,
-      items: response.map((item) => ({
-        requestId: item.requestId,
-        user: {
-          id: item.user.id,
-          displayName: item.user.displayName,
-          name: item.user.name,
-          level: item.user.level,
-          photo: item.user.photo,
-          nacionalityPhoto: item.user.nationality.photo,
-        },
+      total: users.length,
+      items: users.map((user) => ({
+        requestId: user.requestId,
+        id: user.id,
+        displayName: user.displayName,
+        name: user.name,
+        level: user.level,
+        photo: user.photo,
+        nacionalityPhoto: user.nationality.photo,
       })),
     };
   }
