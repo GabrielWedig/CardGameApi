@@ -132,18 +132,9 @@ export class UserService {
     await this.getUser(userId);
 
     const requests = await this.requestRepository.find({
-      where: [
-        { sender: { id: userId }, isAccepted: true },
-        { receiver: { id: userId }, isAccepted: true },
-      ],
+      where: [{ sender: { id: userId } }, { receiver: { id: userId } }],
       relations: ['receiver', 'sender'],
     });
-
-    const friends = requests
-      .filter((request) => request.isAccepted)
-      .map((request) =>
-        request.sender.id === userId ? request.receiver : request.sender,
-      );
 
     const page = params.page ?? 1;
     const limit = params.limit ?? 50;
@@ -175,18 +166,22 @@ export class UserService {
       total,
       limit,
       page,
-      items: users.map((user) => ({
-        id: user.id,
-        displayName: user.displayName,
-        name: user.name,
-        level: user.level,
-        photo: user.photo,
-        nacionalityPhoto: user.nationality.photo,
-        requested: requests.some(
-          (request) => request.sender.id === userId && !request.isAccepted,
-        ),
-        isFriend: friends.some((friend) => friend.id === user.id),
-      })),
+      items: users.map((user) => {
+        const request = requests.find(
+          (request) =>
+            request.sender.id === user.id || request.receiver.id === user.id,
+        );
+        return {
+          id: user.id,
+          displayName: user.displayName,
+          name: user.name,
+          level: user.level,
+          photo: user.photo,
+          nacionalityPhoto: user.nationality.photo,
+          requestId: request?.id,
+          isFriend: request?.isAccepted,
+        };
+      }),
     };
   }
 
