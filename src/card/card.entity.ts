@@ -7,7 +7,16 @@ export class Card {
   id: number;
 
   @Column()
-  imagePath: string;
+  imagePath?: string;
+
+  @Column()
+  audioPath?: string;
+
+  @Column()
+  videoPath?: string;
+
+  @Column()
+  text?: string;
 
   @Column()
   answer: string;

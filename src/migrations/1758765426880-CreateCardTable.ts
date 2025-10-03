@@ -19,7 +19,22 @@ export class CreateCardTable1758765426880 implements MigrationInterface {
           {
             name: 'imagePath',
             type: 'varchar',
-            isNullable: false,
+            isNullable: true,
+          },
+          {
+            name: 'audioPath',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'videoPath',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'text',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'answer',
