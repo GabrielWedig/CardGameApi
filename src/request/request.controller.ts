@@ -6,10 +6,8 @@ import {
   Delete,
   Put,
   Req,
-  Get,
-  Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { RequestService } from './request.service';
 import { JwtProtected } from 'src/auth/jwt-protected.decorator';
 import { AuthenticatedRequest } from 'src/auth/types/auth.types';
@@ -39,24 +37,5 @@ export class RequestController {
   @ApiOperation({ summary: 'Rejeitar uma solicitação' })
   reject(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
     return this.requestService.reject(+id, req.user.id);
-  }
-
-  @Get()
-  @JwtProtected()
-  @ApiOperation({ summary: 'Retorna solicitações vinculadas ao usuário' })
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'search', required: false })
-  find(
-    @Req() req: AuthenticatedRequest,
-    @Query('isAccepted') isAccepted: boolean,
-    @Query('page') page?: number,
-    @Query('limit') limit?: number,
-    @Query('search') search?: string,
-  ) {
-    return this.requestService.find(
-      { isAccepted, page, limit, search },
-      req.user.id,
-    );
   }
 }

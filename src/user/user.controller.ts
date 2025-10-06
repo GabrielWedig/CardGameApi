@@ -27,24 +27,11 @@ export class UserController {
     return this.userService.create(game);
   }
 
-  @Put('update')
-  @JwtProtected()
-  @ApiOperation({ summary: 'Alterar usuário logado' })
-  update(@Body() data: UpdateUserDto, @Req() req: AuthenticatedRequest) {
-    return this.userService.update(req.user.id, data);
-  }
-
   @Get('validate-name')
   @ApiOperation({ summary: 'Valida se o nome está disponível.' })
   async validateName(@Query('name') name: string) {
     const nameExists = await this.userService.nameExists(name);
     return { isValid: !nameExists };
-  }
-
-  @Get(':id/profile')
-  @ApiOperation({ summary: 'Retorna perfil do usuário por ID' })
-  profile(@Param('id') id: number, @Req() req: AuthenticatedRequest) {
-    return this.userService.profile(req.user.id);
   }
 
   @Get()
@@ -64,10 +51,71 @@ export class UserController {
     return this.userService.find({ search, page, limit }, req.user.id);
   }
 
-  @Delete('remove')
+  @Put(':id/update')
+  @JwtProtected()
+  @ApiOperation({ summary: 'Alterar usuário logado' })
+  update(
+    @Param('id') id: number,
+    @Body() data: UpdateUserDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    return this.userService.update(id, req.user.id, data);
+  }
+
+  @Get(':id/profile')
+  @ApiOperation({ summary: 'Retorna perfil do usuário por ID' })
+  profile(@Param('id') id: number) {
+    return this.userService.profile(id);
+  }
+
+  @Get(':id/friends')
+  @ApiOperation({
+    summary: 'Buscar amigos',
+  })
+  @JwtProtected()
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'search', required: false })
+  findFriends(
+    @Param('id') id: number,
+    @Req() req: AuthenticatedRequest,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('search') search?: string,
+  ) {
+    return this.userService.findFriends(
+      { search, page, limit },
+      id,
+      req.user.id,
+    );
+  }
+
+  @Get(':id/requests')
+  @ApiOperation({
+    summary: 'Buscar solicitações de amizade',
+  })
+  @JwtProtected()
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'search', required: false })
+  findRequests(
+    @Param('id') id: number,
+    @Req() req: AuthenticatedRequest,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('search') search?: string,
+  ) {
+    return this.userService.findRequests(
+      { search, page, limit },
+      id,
+      req.user.id,
+    );
+  }
+
+  @Delete(':id/remove')
   @JwtProtected()
   @ApiOperation({ summary: 'Deletar usuário logado' })
-  remove(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
-    return this.userService.remove(req.user.id);
+  remove(@Param('id') id: number, @Req() req: AuthenticatedRequest) {
+    return this.userService.remove(id, req.user.id);
   }
 }

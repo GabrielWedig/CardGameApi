@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { And, Equal, FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
@@ -36,11 +37,18 @@ export class UserService {
     return nationality;
   }
 
-  async getUser(id: number, relations?: string[]) {
+  async getUser(id: number, authId?: number | null, relations?: string[]) {
+    if (authId && id !== authId) {
+      throw new UnauthorizedException(
+        'Você não possui permissão para alterar este usuário.',
+      );
+    }
+
     const user = await this.userRepository.findOne({
       where: { id },
       relations,
     });
+
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
@@ -91,8 +99,8 @@ export class UserService {
     };
   }
 
-  async update(id: number, data: UpdateUserDto) {
-    const user = await this.getUser(id);
+  async update(id: number, authId: number, data: UpdateUserDto) {
+    const user = await this.getUser(id, authId);
 
     if (data.name) {
       user.name = await this.validateName(data.name);
@@ -110,7 +118,7 @@ export class UserService {
   }
 
   async profile(id: number) {
-    const user = await this.getUser(id, ['nationality', 'games', 'friends']);
+    const user = await this.getUser(id, null, ['nationality']);
 
     return {
       id: user.id,
@@ -124,53 +132,106 @@ export class UserService {
       about: user.about,
       since: user.since,
       level: user.level,
-      games: user.games.length,
+      // games: user.games.length,
+    };
+  }
+
+  filter(params: FilterPaginationDto) {
+    const page = params.page ?? 1;
+    const limit = params.limit ?? 50;
+    const skip = (page - 1) * limit;
+    const search = params.search?.trim();
+
+    const isSearchingByName = search && isNaN(Number(search));
+    const searchId = !isSearchingByName ? Number(search) : null;
+    const where: FindOptionsWhere<User> | FindOptionsWhere<User>[] = [];
+
+    if (isSearchingByName) {
+      where.push({ name: ILike(`%${search}%`) });
+      where.push({ displayName: ILike(`%${search}%`) });
+    } else if (searchId) {
+      where.push({ id: searchId });
+    }
+
+    return {
+      page,
+      limit,
+      skip,
+      where,
     };
   }
 
   async find(params: FilterPaginationDto, userId: number) {
-    await this.getUser(userId);
+    const { where, skip, limit, page } = this.filter(params);
 
-    const requests = await this.requestRepository.find({
-      where: [{ sender: { id: userId } }, { receiver: { id: userId } }],
-      relations: ['receiver', 'sender'],
-    });
-
-    const page = params.page ?? 1;
-    const limit = params.limit ?? 50;
-    const skip = (page - 1) * limit;
-
-    const searchId = isNaN(Number(params.search));
-    let where: FindOptionsWhere<User>[] | FindOptionsWhere<User> = {
-      id: Not(userId),
-    };
-
-    if (params.search && !searchId) {
-      where = { id: And(Not(userId), Equal(Number(params.search))) };
-    }
-    if (params.search && searchId) {
-      where = [
-        { id: Not(userId), name: ILike(`%${params.search.trim()}%`) },
-        { id: Not(userId), displayName: ILike(`%${params.search.trim()}%`) },
-      ];
-    }
+    const mappedWhere = where.map((condition) => ({
+      ...condition,
+      id: condition.id ? And(Equal(condition.id), Not(userId)) : Not(userId),
+    }));
+    const defaultWhere = { id: Not(userId) };
 
     const [users, total] = await this.userRepository.findAndCount({
-      where,
+      where: mappedWhere.length ? mappedWhere : defaultWhere,
       skip,
       take: limit,
-      relations: ['nationality', 'receivedRequests', 'receivedRequests.sender'],
+      relations: ['nationality'],
     });
 
     return {
       total,
       limit,
       page,
-      items: users.map((user) => {
-        const request = requests.find(
-          (request) =>
-            request.sender.id === user.id || request.receiver.id === user.id,
-        );
+      items: users.map((user) => ({
+        id: user.id,
+        displayName: user.displayName,
+        name: user.name,
+        level: user.level,
+        photo: user.photo,
+        nacionalityPhoto: user.nationality.photo,
+      })),
+    };
+  }
+
+  async findFriends(params: FilterPaginationDto, id: number, authId: number) {
+    await this.getUser(id, authId);
+    const { where, skip, limit, page } = this.filter(params);
+
+    const whereSender = where.map((condition) => ({
+      sender: { id },
+      receiver: condition,
+      isAccepted: true,
+    }));
+
+    const whereReceiver = where.map((condition) => ({
+      receiver: { id },
+      sender: condition,
+      isAccepted: true,
+    }));
+
+    const mappedWhere = [...whereSender, ...whereReceiver];
+    const defaultWhere = [
+      { sender: { id }, isAccepted: true },
+      { receiver: { id }, isAccepted: true },
+    ];
+
+    const [requests, total] = await this.requestRepository.findAndCount({
+      where: mappedWhere.length ? mappedWhere : defaultWhere,
+      skip,
+      take: limit,
+      relations: [
+        'receiver',
+        'receiver.nationality',
+        'sender',
+        'sender.nationality',
+      ],
+    });
+
+    return {
+      total,
+      limit,
+      page,
+      items: requests.map((req) => {
+        const user = req.sender.id === id ? req.receiver : req.sender;
         return {
           id: user.id,
           displayName: user.displayName,
@@ -178,16 +239,48 @@ export class UserService {
           level: user.level,
           photo: user.photo,
           nacionalityPhoto: user.nationality.photo,
-          requestId: request?.id,
-          isFriend: request?.isAccepted,
-          canAnswer: request?.receiver.id === userId,
+          requestId: req.id,
         };
       }),
     };
   }
 
-  async remove(id: number) {
-    await this.getUser(id);
+  async findRequests(params: FilterPaginationDto, id: number, authId: number) {
+    await this.getUser(id, authId);
+    const { where, skip, limit, page } = this.filter(params);
+
+    const mappedWhere = where.map((condition) => ({
+      receiver: { id },
+      sender: condition,
+      isAccepted: false,
+    }));
+    const defaultWhere = { receiver: { id }, isAccepted: false };
+
+    const [requests, total] = await this.requestRepository.findAndCount({
+      where: mappedWhere.length ? mappedWhere : defaultWhere,
+      skip,
+      take: limit,
+      relations: ['sender', 'sender.nationality'],
+    });
+
+    return {
+      total,
+      limit,
+      page,
+      items: requests.map((req) => ({
+        id: req.sender.id,
+        displayName: req.sender.displayName,
+        name: req.sender.name,
+        level: req.sender.level,
+        photo: req.sender.photo,
+        nacionalityPhoto: req.sender.nationality.photo,
+        requestId: req.id,
+      })),
+    };
+  }
+
+  async remove(id: number, authId: number) {
+    await this.getUser(id, authId);
     await this.userRepository.delete(id);
   }
 }
