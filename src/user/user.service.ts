@@ -131,6 +131,13 @@ export class UserService {
       relations: ['receiver', 'sender'],
     });
 
+    const userRequest = requests.find(
+      (req) => req.sender.id === user.id || req.receiver.id === user.id,
+    );
+
+    const isSender = userRequest?.sender.id === authId;
+    const isAccepted = !!userRequest?.isAccepted;
+
     return {
       id: user.id,
       displayName: user.displayName,
@@ -139,26 +146,13 @@ export class UserService {
       nationalityPhoto: user.nationality.photo,
       about: user.about,
       me: user.id === authId,
-      friend: requests.some(
-        (req) =>
-          (req.sender.id === user.id || req.receiver.id === user.id) &&
-          req.isAccepted,
-      ),
-      requested: requests.some(
-        (req) =>
-          (req.sender.id === user.id || req.receiver.id === user.id) &&
-          !req.isAccepted,
-      ),
-      requestedByMe: requests.some(
-        (req) =>
-          (req.sender.id === authId || req.receiver.id === user.id) &&
-          !req.isAccepted,
-      ),
-      canRequest: !requests.some(
-        (req) => req.sender.id === user.id || req.receiver.id === user.id,
-      ),
+      friend: isAccepted,
+      requested: !!userRequest && !isAccepted,
+      requestedByMe: !!userRequest && isSender && !isAccepted,
+      requestId: userRequest?.id,
+      canRequest: !userRequest,
       stats: {
-        since: user.since,
+        since: user.since.getFullYear(),
       },
     };
   }
