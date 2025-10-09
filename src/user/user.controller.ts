@@ -62,7 +62,7 @@ export class UserController {
     return this.userService.update(id, req.user.id, data);
   }
 
-  @Get(':id/profile')
+  @Get(':name/profile')
   @JwtProtected()
   @ApiOperation({ summary: 'Retorna perfil do usuário por ID' })
   profile(@Param('name') name: string, @Req() req: AuthenticatedRequest) {

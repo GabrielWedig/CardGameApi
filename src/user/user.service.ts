@@ -137,6 +137,7 @@ export class UserService {
 
     const isSender = userRequest?.sender.id === authId;
     const isAccepted = !!userRequest?.isAccepted;
+    const me = user.id === authId;
 
     return {
       id: user.id,
@@ -145,8 +146,8 @@ export class UserService {
       photo: user.photo,
       nationalityPhoto: user.nationality.photo,
       about: user.about,
-      me: user.id === authId,
-      friend: isAccepted,
+      me: me,
+      friend: isAccepted && !me,
       requested: !!userRequest && !isAccepted,
       requestedByMe: !!userRequest && isSender && !isAccepted,
       requestId: userRequest?.id,
