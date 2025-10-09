@@ -37,8 +37,8 @@ export class UserService {
     return nationality;
   }
 
-  async getUser(id: number, authId: number | null, relations?: string[]) {
-    if (authId && id !== authId) {
+  async getUser(id: number, authId: number, relations?: string[]) {
+    if (id !== authId) {
       throw new UnauthorizedException(
         'Você não possui permissão para alterar este usuário.',
       );
@@ -116,11 +116,18 @@ export class UserService {
     await this.userRepository.update(id, data);
   }
 
-  async profile(id: number, userId: number) {
-    const user = await this.getUser(id, null, ['nationality']);
+  async profile(userName: string, authId: number) {
+    const user = await this.userRepository.findOne({
+      where: { name: userName },
+      relations: ['nationality'],
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
 
     const requests = await this.requestRepository.find({
-      where: [{ sender: { id: userId } }, { receiver: { id: userId } }],
+      where: [{ sender: { id: authId } }, { receiver: { id: authId } }],
       relations: ['receiver', 'sender'],
     });
 
@@ -131,7 +138,7 @@ export class UserService {
       photo: user.photo,
       nationalityPhoto: user.nationality.photo,
       about: user.about,
-      me: user.id === userId,
+      me: user.id === authId,
       friend: requests.some(
         (req) =>
           (req.sender.id === user.id || req.receiver.id === user.id) &&
@@ -144,7 +151,7 @@ export class UserService {
       ),
       requestedByMe: requests.some(
         (req) =>
-          (req.sender.id === userId || req.receiver.id === user.id) &&
+          (req.sender.id === authId || req.receiver.id === user.id) &&
           !req.isAccepted,
       ),
       canRequest: !requests.some(
