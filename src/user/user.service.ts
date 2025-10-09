@@ -132,6 +132,7 @@ export class UserService {
     });
 
     const me = user.id === authId;
+
     const userRequest = !me
       ? requests.find(
           (req) => req.sender.id === user.id || req.receiver.id === user.id,
@@ -149,11 +150,11 @@ export class UserService {
       nationalityPhoto: user.nationality.photo,
       about: user.about,
       me,
-      friend: isAccepted,
+      friend: !me && isAccepted,
       requested: !!userRequest && !isAccepted,
       requestedByMe: !!userRequest && isSender && !isAccepted,
       requestId: userRequest?.id,
-      canRequest: !userRequest,
+      canRequest: !me && !userRequest,
       stats: {
         since: user.since.getFullYear(),
       },
