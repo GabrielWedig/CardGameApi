@@ -131,13 +131,15 @@ export class UserService {
       relations: ['receiver', 'sender'],
     });
 
-    const userRequest = requests.find(
-      (req) => req.sender.id === user.id || req.receiver.id === user.id,
-    );
+    const me = user.id === authId;
+    const userRequest = !me
+      ? requests.find(
+          (req) => req.sender.id === user.id || req.receiver.id === user.id,
+        )
+      : null;
 
     const isSender = userRequest?.sender.id === authId;
     const isAccepted = !!userRequest?.isAccepted;
-    const me = user.id === authId;
 
     return {
       id: user.id,
@@ -146,8 +148,8 @@ export class UserService {
       photo: user.photo,
       nationalityPhoto: user.nationality.photo,
       about: user.about,
-      me: me,
-      friend: isAccepted && !me,
+      me,
+      friend: isAccepted,
       requested: !!userRequest && !isAccepted,
       requestedByMe: !!userRequest && isSender && !isAccepted,
       requestId: userRequest?.id,
@@ -208,7 +210,7 @@ export class UserService {
         displayName: user.displayName,
         name: user.name,
         photo: user.photo,
-        nacionalityPhoto: user.nationality.photo,
+        nationalityPhoto: user.nationality.photo,
       })),
     };
   }
@@ -258,7 +260,7 @@ export class UserService {
           displayName: user.displayName,
           name: user.name,
           photo: user.photo,
-          nacionalityPhoto: user.nationality.photo,
+          nationalityPhoto: user.nationality.photo,
           requestId: req.id,
         };
       }),
@@ -292,7 +294,7 @@ export class UserService {
         displayName: req.sender.displayName,
         name: req.sender.name,
         photo: req.sender.photo,
-        nacionalityPhoto: req.sender.nationality.photo,
+        nationalityPhoto: req.sender.nationality.photo,
         requestId: req.id,
       })),
     };
