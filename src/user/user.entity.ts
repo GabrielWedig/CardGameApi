@@ -40,9 +40,6 @@ export class User {
   @OneToMany(() => Game, (game) => game.createdBy)
   games: Game[];
 
-  @Column()
-  level: number;
-
   @OneToMany(() => Request, (request) => request.sender)
   sentRequests: Request[];
 

@@ -63,9 +63,10 @@ export class UserController {
   }
 
   @Get(':id/profile')
+  @JwtProtected()
   @ApiOperation({ summary: 'Retorna perfil do usuário por ID' })
-  profile(@Param('id') id: number) {
-    return this.userService.profile(id);
+  profile(@Param('id') id: number, @Req() req: AuthenticatedRequest) {
+    return this.userService.profile(id, req.user.id);
   }
 
   @Get(':id/friends')

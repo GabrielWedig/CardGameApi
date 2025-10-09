@@ -10,12 +10,6 @@ export class Card {
   imagePath?: string;
 
   @Column()
-  audioPath?: string;
-
-  @Column()
-  videoPath?: string;
-
-  @Column()
   text?: string;
 
   @Column()

@@ -52,11 +52,6 @@ export class CreateUserTable1758765353906 implements MigrationInterface {
             type: 'timestamptz',
             isNullable: false,
           },
-          {
-            name: 'level',
-            type: 'integer',
-            isNullable: false,
-          },
         ],
       }),
       true,

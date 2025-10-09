@@ -37,7 +37,7 @@ export class UserService {
     return nationality;
   }
 
-  async getUser(id: number, authId?: number | null, relations?: string[]) {
+  async getUser(id: number, authId: number | null, relations?: string[]) {
     if (authId && id !== authId) {
       throw new UnauthorizedException(
         'Você não possui permissão para alterar este usuário.',
@@ -89,7 +89,6 @@ export class UserService {
       photo: defaultPhoto,
       nationality: nationality,
       since: new Date(),
-      level: 0,
     };
     const user = await this.userRepository.save(newUser);
     const payload = { sub: user.id, name: user.name };
@@ -117,22 +116,43 @@ export class UserService {
     await this.userRepository.update(id, data);
   }
 
-  async profile(id: number) {
+  async profile(id: number, userId: number) {
     const user = await this.getUser(id, null, ['nationality']);
+
+    const requests = await this.requestRepository.find({
+      where: [{ sender: { id: userId } }, { receiver: { id: userId } }],
+      relations: ['receiver', 'sender'],
+    });
 
     return {
       id: user.id,
-      name: user.name,
       displayName: user.displayName,
+      name: user.name,
       photo: user.photo,
-      nationality: {
-        name: user.nationality.name,
-        photo: user.nationality.photo,
-      },
+      nationalityPhoto: user.nationality.photo,
       about: user.about,
-      since: user.since,
-      level: user.level,
-      // games: user.games.length,
+      me: user.id === userId,
+      friend: requests.some(
+        (req) =>
+          (req.sender.id === user.id || req.receiver.id === user.id) &&
+          req.isAccepted,
+      ),
+      requested: requests.some(
+        (req) =>
+          (req.sender.id === user.id || req.receiver.id === user.id) &&
+          !req.isAccepted,
+      ),
+      requestedByMe: requests.some(
+        (req) =>
+          (req.sender.id === userId || req.receiver.id === user.id) &&
+          !req.isAccepted,
+      ),
+      canRequest: !requests.some(
+        (req) => req.sender.id === user.id || req.receiver.id === user.id,
+      ),
+      stats: {
+        since: user.since,
+      },
     };
   }
 
@@ -185,7 +205,6 @@ export class UserService {
         id: user.id,
         displayName: user.displayName,
         name: user.name,
-        level: user.level,
         photo: user.photo,
         nacionalityPhoto: user.nationality.photo,
       })),
@@ -236,7 +255,6 @@ export class UserService {
           id: user.id,
           displayName: user.displayName,
           name: user.name,
-          level: user.level,
           photo: user.photo,
           nacionalityPhoto: user.nationality.photo,
           requestId: req.id,
@@ -271,7 +289,6 @@ export class UserService {
         id: req.sender.id,
         displayName: req.sender.displayName,
         name: req.sender.name,
-        level: req.sender.level,
         photo: req.sender.photo,
         nacionalityPhoto: req.sender.nationality.photo,
         requestId: req.id,
