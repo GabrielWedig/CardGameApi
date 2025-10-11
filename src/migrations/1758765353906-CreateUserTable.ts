@@ -33,9 +33,14 @@ export class CreateUserTable1758765353906 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'photo',
+            name: 'photoUrl',
             type: 'varchar',
-            isNullable: false,
+            isNullable: true,
+          },
+          {
+            name: 'photoId',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'nationalityId',

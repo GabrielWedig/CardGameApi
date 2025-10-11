@@ -6,6 +6,8 @@ import { User } from './user.entity';
 import { Nationality } from 'src/nationality/nationality.entity';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { Request } from 'src/request/request.entity';
+import { CloudinaryService } from 'src/common/services/cloudinary.service';
+import { HttpModule } from '@nestjs/axios';
 
 const jwtOptions: JwtModuleOptions = {
   secret: process.env.JWT_SECRET as string,
@@ -16,8 +18,9 @@ const jwtOptions: JwtModuleOptions = {
   imports: [
     TypeOrmModule.forFeature([User, Nationality, Request]),
     JwtModule.register(jwtOptions),
+    HttpModule,
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, CloudinaryService],
 })
 export class UserModule {}

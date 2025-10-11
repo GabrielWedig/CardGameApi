@@ -42,13 +42,13 @@ export class AuthService {
 
   async me(id: number) {
     const user = await this.getUser({ id });
-    const { displayName, name, photo } = user;
+    const { displayName, name, photoUrl } = user;
 
     return {
       id,
       displayName,
       name,
-      photo,
+      photoUrl,
     };
   }
 }

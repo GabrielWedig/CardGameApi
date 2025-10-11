@@ -10,7 +10,7 @@ export class Nationality {
   name: string;
 
   @Column()
-  photo: string;
+  photoUrl: string;
 
   @OneToMany(() => User, (user) => user.nationality)
   users: User[];

@@ -51,7 +51,7 @@ export class GameService {
       throw new UnauthorizedException();
     }
 
-    game.name = data.name ?? game.name;
+    game.name = data.name ? data.name : game.name;
     await this.gameRepository.save(game);
   }
 

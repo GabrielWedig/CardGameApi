@@ -23,8 +23,11 @@ export class User {
   @Column()
   displayName: string;
 
-  @Column()
-  photo: string;
+  @Column({ nullable: true })
+  photoUrl: string;
+
+  @Column({ nullable: true })
+  photoId: string;
 
   @ManyToOne(() => Nationality, (nationality) => nationality.users, {
     onDelete: 'CASCADE',

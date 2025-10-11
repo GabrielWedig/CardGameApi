@@ -14,6 +14,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { FilterPaginationDto } from 'src/common/dto/pagination.dto';
 import { Request } from 'src/request/request.entity';
+import { CloudinaryService } from 'src/common/services/cloudinary.service';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,7 @@ export class UserService {
     @InjectRepository(Request)
     private requestRepository: Repository<Request>,
     private jwtService: JwtService,
+    private cloudinaryService: CloudinaryService,
   ) {}
 
   async getNationality(id: number) {
@@ -55,7 +57,10 @@ export class UserService {
     return user;
   }
 
-  async nameExists(name: string) {
+  async nameExists(name: string, authName?: string) {
+    if (authName && authName === name) {
+      return true;
+    }
     return await this.userRepository.exists({
       where: { name },
     });
@@ -79,14 +84,10 @@ export class UserService {
     const nationality = await this.getNationality(data.nationalityId);
     const hashedPassword = await this.hashPassword(data.password);
 
-    const defaultPhoto =
-      'https://res.cloudinary.com/dqwif7teu/image/upload/v1758653165/users/vgvgxqncbaro2upu6lmw.png';
-
     const newUser = {
       name: name,
       password: hashedPassword,
       displayName: data.displayName,
-      photo: defaultPhoto,
       nationality: nationality,
       since: new Date(),
     };
@@ -98,7 +99,12 @@ export class UserService {
     };
   }
 
-  async update(id: number, authId: number, data: UpdateUserDto) {
+  async update(
+    id: number,
+    authId: number,
+    data: UpdateUserDto,
+    photo?: Express.Multer.File,
+  ) {
     const user = await this.getUser(id, authId);
 
     if (data.name) {
@@ -109,11 +115,22 @@ export class UserService {
       user.password = await this.hashPassword(data.password);
     }
 
-    user.displayName = data.displayName ?? user.displayName;
-    user.photo = data.photo ?? user.photo;
-    user.about = data.about ?? user.about;
+    if (photo) {
+      if (user.photoId && user.photoUrl) {
+        await this.cloudinaryService.deleteImage(user.photoId);
+      }
+      const response = await this.cloudinaryService.uploadImage(
+        photo.buffer,
+        'users',
+      );
+      user.photoUrl = response.url;
+      user.photoId = response.publicId;
+    }
 
-    await this.userRepository.update(id, data);
+    user.displayName = data.displayName ? data.displayName : user.displayName;
+    user.about = data.about ? data.about : user.about;
+
+    await this.userRepository.update(id, user);
   }
 
   async profile(userName: string, authId: number) {
@@ -146,8 +163,8 @@ export class UserService {
       id: user.id,
       displayName: user.displayName,
       name: user.name,
-      photo: user.photo,
-      nationalityPhoto: user.nationality.photo,
+      photoUrl: user.photoUrl,
+      nationalityPhotoUrl: user.nationality.photoUrl,
       about: user.about,
       me,
       friend: !me && isAccepted,
@@ -210,8 +227,8 @@ export class UserService {
         id: user.id,
         displayName: user.displayName,
         name: user.name,
-        photo: user.photo,
-        nationalityPhoto: user.nationality.photo,
+        photoUrl: user.photoUrl,
+        nationalityPhotoUrl: user.nationality.photoUrl,
       })),
     };
   }
@@ -260,8 +277,8 @@ export class UserService {
           id: user.id,
           displayName: user.displayName,
           name: user.name,
-          photo: user.photo,
-          nationalityPhoto: user.nationality.photo,
+          photoUrl: user.photoUrl,
+          nationalityPhotoUrl: user.nationality.photoUrl,
           requestId: req.id,
         };
       }),
@@ -294,8 +311,8 @@ export class UserService {
         id: req.sender.id,
         displayName: req.sender.displayName,
         name: req.sender.name,
-        photo: req.sender.photo,
-        nationalityPhoto: req.sender.nationality.photo,
+        photoUrl: req.sender.photoUrl,
+        nationalityPhotoUrl: req.sender.nationality.photoUrl,
         requestId: req.id,
       })),
     };

@@ -7,15 +7,10 @@ export class UpdateUserDto {
   @IsString()
   about?: string;
 
-  @ApiPropertyOptional({ example: 'url.png', description: 'Foto' })
-  @IsOptional()
-  @IsString()
-  photo?: string;
-
   @ApiPropertyOptional({ example: 'eagleflying', description: 'Nome único' })
   @IsOptional()
   @IsString()
-  @Matches(/^[A-Za-z0-9]{1,15}$/, {
+  @Matches(/^$|^[A-Za-z0-9]{1,15}$/, {
     message:
       'O nome deve conter apenas letras e números, sem espaços ou caracteres especiais, e ter no máximo 15 caracteres',
   })
@@ -24,10 +19,13 @@ export class UpdateUserDto {
   @ApiPropertyOptional({ example: 'Senha10@', description: 'Senha' })
   @IsOptional()
   @IsString()
-  @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/, {
-    message:
-      'Senha deve ter no mínimo 8 caracteres, pelo menos uma letra maiúscula, um número e um caractere especial',
-  })
+  @Matches(
+    /^$|^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{};':"\\|,.<>/?]).{8,}$/,
+    {
+      message:
+        'Senha deve ter no mínimo 8 caracteres, pelo menos uma letra maiúscula, um número e um caractere especial',
+    },
+  )
   password?: string;
 
   @ApiPropertyOptional({
@@ -37,4 +35,13 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   displayName?: string;
+}
+
+export class UpdateUserSwaggerDto extends UpdateUserDto {
+  @ApiPropertyOptional({
+    type: 'string',
+    format: 'binary',
+    description: 'Foto do usuário',
+  })
+  photo?: Express.Multer.File;
 }

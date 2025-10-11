@@ -8,13 +8,22 @@ import {
   Put,
   Req,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiQuery,
+  ApiConsumes,
+  ApiBody,
+} from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto, UpdateUserSwaggerDto } from './dto/update-user.dto';
 import { JwtProtected } from 'src/auth/jwt-protected.decorator';
 import { AuthenticatedRequest } from 'src/auth/types/auth.types';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Usuários')
 @Controller('users')
@@ -29,8 +38,11 @@ export class UserController {
 
   @Get('validate-name')
   @ApiOperation({ summary: 'Valida se o nome está disponível.' })
-  async validateName(@Query('name') name: string) {
-    const nameExists = await this.userService.nameExists(name);
+  async validateName(
+    @Query('name') name: string,
+    @Req() req?: AuthenticatedRequest,
+  ) {
+    const nameExists = await this.userService.nameExists(name, req?.user?.name);
     return { isValid: !nameExists };
   }
 
@@ -53,13 +65,17 @@ export class UserController {
 
   @Put(':id/update')
   @JwtProtected()
+  @UseInterceptors(FileInterceptor('photo'))
   @ApiOperation({ summary: 'Alterar usuário logado' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UpdateUserSwaggerDto })
   update(
     @Param('id') id: number,
     @Body() data: UpdateUserDto,
     @Req() req: AuthenticatedRequest,
+    @UploadedFile() photo?: Express.Multer.File,
   ) {
-    return this.userService.update(id, req.user.id, data);
+    return this.userService.update(id, req.user.id, data, photo);
   }
 
   @Get(':name/profile')

@@ -67,8 +67,8 @@ export class CardService {
       throw new UnauthorizedException();
     }
 
-    card.answer = data.answer ?? card.answer;
-    card.imagePath = data.imagePath ?? card.imagePath;
+    card.answer = data.answer ? data.answer : card.answer;
+    card.imagePath = data.imagePath ? data.imagePath : card.imagePath;
 
     await this.cardRepository.save(card);
   }
