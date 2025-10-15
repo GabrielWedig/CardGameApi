@@ -78,7 +78,7 @@ export class CardService {
     const cards = await this.cardRepository.find({
       where: { game: { id: gameId } },
     });
-    return this.mixCards(cards);
+    return this.mixCards(cards).map(({ imageId, ...rest }) => rest);
   }
 
   async remove(id: number, userId: number) {

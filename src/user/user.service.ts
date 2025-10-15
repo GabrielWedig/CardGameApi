@@ -169,11 +169,11 @@ export class UserService {
       displayName: user.displayName,
       name: user.name,
       photoUrl: user.photoUrl,
-      nationalityPhotoUrl: user.nationality.imageUrl,
+      nationalityImageUrl: user.nationality.imageUrl,
       about: user.about,
       me,
       friend: !me && isAccepted,
-      requested: !!userRequest && !isAccepted,
+      requested: !!userRequest && !isSender && !isAccepted,
       requestedByMe: !!userRequest && isSender && !isAccepted,
       requestId: userRequest?.id,
       canRequest: !me && !userRequest,
@@ -233,7 +233,7 @@ export class UserService {
         displayName: user.displayName,
         name: user.name,
         photoUrl: user.photoUrl,
-        nationalityPhotoUrl: user.nationality.imageUrl,
+        nationalityImageUrl: user.nationality.imageUrl,
       })),
     };
   }
@@ -283,7 +283,7 @@ export class UserService {
           displayName: user.displayName,
           name: user.name,
           photoUrl: user.photoUrl,
-          nationalityPhotoUrl: user.nationality.imageUrl,
+          nationalityImageUrl: user.nationality.imageUrl,
           requestId: req.id,
         };
       }),
@@ -317,7 +317,7 @@ export class UserService {
         displayName: req.sender.displayName,
         name: req.sender.name,
         photoUrl: req.sender.photoUrl,
-        nationalityPhotoUrl: req.sender.nationality.imageUrl,
+        nationalityImageUrl: req.sender.nationality.imageUrl,
         requestId: req.id,
       })),
     };
