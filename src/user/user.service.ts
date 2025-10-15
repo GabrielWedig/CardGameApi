@@ -83,6 +83,9 @@ export class UserService {
     const name = await this.validateName(data.name);
     const nationality = await this.getNationality(data.nationalityId);
     const hashedPassword = await this.hashPassword(data.password);
+    const photoUrl =
+      'https://res.cloudinary.com/dqwif7teu/image/upload/v1760150794/users/tfeebnhxk9bkjhpgb6xh.png';
+    const photoId = 'tfeebnhxk9bkjhpgb6xh';
 
     const newUser = {
       name: name,
@@ -90,6 +93,8 @@ export class UserService {
       displayName: data.displayName,
       nationality: nationality,
       since: new Date(),
+      photoUrl,
+      photoId,
     };
     const user = await this.userRepository.save(newUser);
     const payload = { sub: user.id, name: user.name };
@@ -107,7 +112,7 @@ export class UserService {
   ) {
     const user = await this.getUser(id, authId);
 
-    if (data.name) {
+    if (data.name && data.name !== user.name) {
       user.name = await this.validateName(data.name);
     }
 
@@ -164,7 +169,7 @@ export class UserService {
       displayName: user.displayName,
       name: user.name,
       photoUrl: user.photoUrl,
-      nationalityPhotoUrl: user.nationality.photoUrl,
+      nationalityPhotoUrl: user.nationality.imageUrl,
       about: user.about,
       me,
       friend: !me && isAccepted,
@@ -228,7 +233,7 @@ export class UserService {
         displayName: user.displayName,
         name: user.name,
         photoUrl: user.photoUrl,
-        nationalityPhotoUrl: user.nationality.photoUrl,
+        nationalityPhotoUrl: user.nationality.imageUrl,
       })),
     };
   }
@@ -278,7 +283,7 @@ export class UserService {
           displayName: user.displayName,
           name: user.name,
           photoUrl: user.photoUrl,
-          nationalityPhotoUrl: user.nationality.photoUrl,
+          nationalityPhotoUrl: user.nationality.imageUrl,
           requestId: req.id,
         };
       }),
@@ -312,7 +317,7 @@ export class UserService {
         displayName: req.sender.displayName,
         name: req.sender.name,
         photoUrl: req.sender.photoUrl,
-        nationalityPhotoUrl: req.sender.nationality.photoUrl,
+        nationalityPhotoUrl: req.sender.nationality.imageUrl,
         requestId: req.id,
       })),
     };

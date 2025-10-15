@@ -12,5 +12,11 @@ export class UpdateCardDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  imagePath?: string;
+  imageUrl?: string;
+
+  @ApiProperty({ example: 'www.minio.com', description: 'Id da imagem' })
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  imageId?: string;
 }

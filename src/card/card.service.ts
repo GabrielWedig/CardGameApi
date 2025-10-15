@@ -68,7 +68,8 @@ export class CardService {
     }
 
     card.answer = data.answer ? data.answer : card.answer;
-    card.imagePath = data.imagePath ? data.imagePath : card.imagePath;
+    card.imageUrl = data.imageUrl ? data.imageUrl : card.imageUrl;
+    card.imageId = data.imageId ? data.imageId : card.imageId;
 
     await this.cardRepository.save(card);
   }

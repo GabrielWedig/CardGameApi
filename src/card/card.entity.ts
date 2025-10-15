@@ -6,10 +6,13 @@ export class Card {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  imagePath?: string;
+  @Column({ nullable: true })
+  imageUrl?: string;
 
-  @Column()
+  @Column({ nullable: true })
+  imageId?: string;
+
+  @Column({ nullable: true })
   text?: string;
 
   @Column()

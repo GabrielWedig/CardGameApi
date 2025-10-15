@@ -23,10 +23,10 @@ export class User {
   @Column()
   displayName: string;
 
-  @Column({ nullable: true })
+  @Column()
   photoUrl: string;
 
-  @Column({ nullable: true })
+  @Column()
   photoId: string;
 
   @ManyToOne(() => Nationality, (nationality) => nationality.users, {

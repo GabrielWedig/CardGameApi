@@ -18,7 +18,7 @@ export class CreateNationalityTable1758765320060 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'photoUrl',
+            name: 'imageUrl',
             type: 'varchar',
             isNullable: false,
           },

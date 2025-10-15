@@ -63,7 +63,7 @@ export class UserController {
     return this.userService.find({ search, page, limit }, req.user.id);
   }
 
-  @Put(':id/update')
+  @Put(':id')
   @JwtProtected()
   @UseInterceptors(FileInterceptor('photo'))
   @ApiOperation({ summary: 'Alterar usuário logado' })
@@ -129,7 +129,7 @@ export class UserController {
     );
   }
 
-  @Delete(':id/remove')
+  @Delete(':id')
   @JwtProtected()
   @ApiOperation({ summary: 'Deletar usuário logado' })
   remove(@Param('id') id: number, @Req() req: AuthenticatedRequest) {
