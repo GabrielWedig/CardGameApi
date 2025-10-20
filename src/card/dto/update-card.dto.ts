@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateCardDto {
@@ -8,15 +8,28 @@ export class UpdateCardDto {
   @IsNotEmpty()
   answer?: string;
 
-  @ApiProperty({ example: 'www.minio.com', description: 'Url da imagem' })
+  @ApiProperty({
+    example: 'Pergunta',
+    description: 'Qual é o maior país do mundo?',
+  })
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
-  imageUrl?: string;
+  text?: string;
+}
 
-  @ApiProperty({ example: 'www.minio.com', description: 'Id da imagem' })
-  @IsString()
-  @IsOptional()
-  @IsNotEmpty()
-  imageId?: string;
+export class UpdateCardSwaggerDto extends OmitType(UpdateCardDto, [
+  'text',
+] as const) {
+  @ApiPropertyOptional({
+    type: 'string',
+    format: 'binary',
+    description: 'Imagem',
+  })
+  image?: Express.Multer.File;
+
+  @ApiPropertyOptional({
+    type: 'string',
+    description: 'Pergunta',
+  })
+  text?: string;
 }

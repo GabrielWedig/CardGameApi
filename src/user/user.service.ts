@@ -304,7 +304,12 @@ export class UserService {
   }
 
   async remove(id: number, authId: number) {
-    await this.getUser(id, authId);
+    const user = await this.getUser(id, authId);
+
+    if (user.photoId && user.photoUrl) {
+      await this.cloudinaryService.deleteImage(user.photoId);
+    }
+
     await this.userRepository.delete(id);
   }
 }

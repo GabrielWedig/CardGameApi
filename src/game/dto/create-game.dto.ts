@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateGameDto {
@@ -6,4 +6,8 @@ export class CreateGameDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsEnum(['public', 'private', 'friends'])
+  @IsNotEmpty()
+  visibility: 'public' | 'private' | 'friends';
 }

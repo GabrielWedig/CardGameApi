@@ -41,7 +41,8 @@ export class GameService {
   async create(data: CreateGameDto, userId: number) {
     const user = await this.getUser(userId);
     const game = { ...data, createdBy: user };
-    await this.gameRepository.save(game);
+    const newGame = await this.gameRepository.save(game);
+    return { id: newGame.id };
   }
 
   async update(id: number, data: UpdateGameDto, userId: number) {
@@ -52,16 +53,21 @@ export class GameService {
     }
 
     game.name = data.name ? data.name : game.name;
+    game.visibility = data.visibility ? data.visibility : game.visibility;
+
     await this.gameRepository.save(game);
   }
 
+  // aplicar filtros
   async findAll() {
     const games = await this.gameRepository.find({
       relations: ['cards', 'createdBy'],
+      where: { visibility: 'public' },
     });
 
     return games.map((game) => ({
-      ...game,
+      id: game.id,
+      name: game.name,
       cards: game.cards.length,
       createdBy: game.createdBy.displayName,
     }));
@@ -71,9 +77,9 @@ export class GameService {
     const game = await this.getGame(id, ['cards', 'createdBy']);
 
     return {
-      ...game,
-      cards: game.cards.length,
-      createdBy: game.createdBy.displayName,
+      id: game.id,
+      name: game.name,
+      visibility: game.visibility,
     };
   }
 

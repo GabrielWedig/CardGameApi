@@ -17,6 +17,13 @@ export class Game {
   @Column()
   name: string;
 
+  @Column({
+    type: 'enum',
+    enum: ['public', 'private', 'friends'],
+    default: 'public',
+  })
+  visibility: 'public' | 'private' | 'friends';
+
   @OneToMany(() => Card, (card) => card.game)
   cards: Card[];
 

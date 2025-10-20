@@ -26,6 +26,13 @@ export class CreateGameTable1758765389115 implements MigrationInterface {
             type: 'integer',
             isNullable: false,
           },
+          {
+            name: 'visibility',
+            type: 'enum',
+            enum: ['public', 'private', 'friends'],
+            default: `'public'`,
+            isNullable: false,
+          },
         ],
       }),
       true,
