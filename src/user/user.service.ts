@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { And, Equal, FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
+import { And, Equal, ILike, Not, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Nationality } from 'src/nationality/nationality.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +15,7 @@ import { JwtService } from '@nestjs/jwt';
 import { FilterPaginationDto } from 'src/common/dto/pagination.dto';
 import { Request } from 'src/request/request.entity';
 import { CloudinaryService } from 'src/common/services/cloudinary.service';
+import { buildFilter, paginated } from 'src/common/buildFilter';
 
 @Injectable()
 export class UserService {
@@ -183,45 +184,24 @@ export class UserService {
     };
   }
 
-  filter(params: FilterPaginationDto) {
-    const page = params.page ?? 1;
-    const limit = params.limit ?? 50;
-    const skip = (page - 1) * limit;
-    const search = params.search?.trim();
-
-    const isSearchingByName = search && isNaN(Number(search));
-    const searchId = !isSearchingByName ? Number(search) : null;
-    const where: FindOptionsWhere<User> | FindOptionsWhere<User>[] = [];
-
-    if (isSearchingByName) {
-      where.push({ name: ILike(`%${search}%`) });
-      where.push({ displayName: ILike(`%${search}%`) });
-    } else if (searchId) {
-      where.push({ id: searchId });
-    }
-
-    return {
-      page,
-      limit,
-      skip,
-      where,
-    };
-  }
-
   async find(params: FilterPaginationDto, userId: number) {
-    const { where, skip, limit, page } = this.filter(params);
+    const { skip, take, limit, page } = paginated(params);
 
-    const mappedWhere = where.map((condition) => ({
-      ...condition,
-      id: condition.id ? And(Equal(condition.id), Not(userId)) : Not(userId),
-    }));
-    const defaultWhere = { id: Not(userId) };
+    const where = buildFilter<User>({
+      search: params.search,
+      defaultWhere: { id: Not(userId) },
+      numberFilter: (search) => ({ id: And(Not(userId), Equal(search)) }),
+      textFilter: (search) => [
+        { id: Not(userId), name: ILike(`%${search}%`) },
+        { id: Not(userId), displayName: ILike(`%${search}%`) },
+      ],
+    });
 
     const [users, total] = await this.userRepository.findAndCount({
-      where: mappedWhere.length ? mappedWhere : defaultWhere,
-      skip,
-      take: limit,
       relations: ['nationality'],
+      where,
+      skip,
+      take,
     });
 
     return {
@@ -240,36 +220,32 @@ export class UserService {
 
   async findFriends(params: FilterPaginationDto, id: number, authId: number) {
     await this.getUser(id, authId);
-    const { where, skip, limit, page } = this.filter(params);
+    const { skip, take, limit, page } = paginated(params);
 
-    const whereSender = where.map((condition) => ({
-      sender: { id },
-      receiver: condition,
-      isAccepted: true,
-    }));
+    const userFilter = buildFilter<User>({
+      search: params.search,
+      numberFilter: (search) => ({ id: search }),
+      textFilter: (search) => [
+        { name: ILike(`%${search}%`) },
+        { displayName: ILike(`%${search}%`) },
+      ],
+    });
 
-    const whereReceiver = where.map((condition) => ({
-      receiver: { id },
-      sender: condition,
-      isAccepted: true,
-    }));
-
-    const mappedWhere = [...whereSender, ...whereReceiver];
-    const defaultWhere = [
-      { sender: { id }, isAccepted: true },
-      { receiver: { id }, isAccepted: true },
+    const where = [
+      { sender: { id }, isAccepted: true, receiver: userFilter },
+      { receiver: { id }, isAccepted: true, sender: userFilter },
     ];
 
     const [requests, total] = await this.requestRepository.findAndCount({
-      where: mappedWhere.length ? mappedWhere : defaultWhere,
-      skip,
-      take: limit,
       relations: [
         'receiver',
         'receiver.nationality',
         'sender',
         'sender.nationality',
       ],
+      where,
+      skip,
+      take,
     });
 
     return {
@@ -292,20 +268,24 @@ export class UserService {
 
   async findRequests(params: FilterPaginationDto, id: number, authId: number) {
     await this.getUser(id, authId);
-    const { where, skip, limit, page } = this.filter(params);
+    const { skip, take, limit, page } = paginated(params);
 
-    const mappedWhere = where.map((condition) => ({
-      receiver: { id },
-      sender: condition,
-      isAccepted: false,
-    }));
-    const defaultWhere = { receiver: { id }, isAccepted: false };
+    const userFilter = buildFilter<User>({
+      search: params.search,
+      numberFilter: (search) => ({ id: search }),
+      textFilter: (search) => [
+        { name: ILike(`%${search}%`) },
+        { displayName: ILike(`%${search}%`) },
+      ],
+    });
+
+    const where = { receiver: { id }, isAccepted: false, sender: userFilter };
 
     const [requests, total] = await this.requestRepository.findAndCount({
-      where: mappedWhere.length ? mappedWhere : defaultWhere,
-      skip,
-      take: limit,
       relations: ['sender', 'sender.nationality'],
+      where,
+      skip,
+      take,
     });
 
     return {
